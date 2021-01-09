@@ -1,0 +1,25 @@
+language: generic
+
+os: linux
+
+dist: xenial
+
+cache:
+  # Caches $HOME/.npm when npm ci is default script command
+  # Caches node_modules in all other cases
+  npm: true
+  directories:
+    - ~/.cache
+
+services:
+  - docker
+
+before_script:
+  - docker-compose up -d --build
+
+script:
+  - docker-compose exec account npm run lint
+  - docker-compose exec feed npm run lint
+
+after_script:
+  - docker-compose down -v
