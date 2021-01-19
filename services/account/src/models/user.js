@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -11,13 +11,22 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isActive: { type: Boolean, required: true },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret.password;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  },
 );
 
 userSchema.static('findByEmail', function (email) {
   return this.find({ email });
 });
 
-const User = mongoose.model('User', userSchema, 'users');
-
-export default User;
+export default model('User', userSchema, 'users');
