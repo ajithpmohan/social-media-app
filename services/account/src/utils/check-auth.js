@@ -15,6 +15,9 @@ export default async ({
       try {
         const decoded = jwt.verify(token, authConfig.SECRET);
         const user = await models.User.findById(decoded.id);
+        if (!user) {
+          throw new Error();
+        }
         return user;
       } catch (err) {
         throw new AuthenticationError('Invalid/Expired token');

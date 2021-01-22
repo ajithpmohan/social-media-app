@@ -2,7 +2,12 @@ import { Schema, model } from 'mongoose';
 
 const profileSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'users' },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+      unique: true,
+      required: true,
+    },
     firstName: { type: String, max_length: 64, required: true },
     lastName: { type: String, max_length: 64, required: true },
     avatar: { data: Buffer, Contenttype: String },
