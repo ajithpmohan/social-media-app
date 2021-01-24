@@ -8,6 +8,8 @@ import resolvers from './graphql/resolvers';
 
 const app = express();
 
+const PORT = process.env.PORT || '3000';
+
 app.use(cors());
 
 const server = new ApolloServer({
@@ -17,8 +19,6 @@ const server = new ApolloServer({
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
-
-const PORT = process.env.PORT || '3000';
 
 app.listen({ port: PORT }, () => {
   console.log(`Apollo Server on http://localhost:${PORT}/graphql`);

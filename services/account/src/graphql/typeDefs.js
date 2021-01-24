@@ -4,6 +4,7 @@ const typeDefs = gql`
   type User {
     id: ID!
     email: String!
+    username: String!
     token: String!
     createdAt: String!
     updatedAt: String!
@@ -12,6 +13,7 @@ const typeDefs = gql`
 
   input RegisterInput {
     email: String!
+    username: String!
     password: String!
     confirmPassword: String!
   }
@@ -42,6 +44,7 @@ const typeDefs = gql`
 
   type Query {
     login(loginInput: LoginInput): User!
+    getAuthUser: User!
     getProfile: Profile!
   }
 

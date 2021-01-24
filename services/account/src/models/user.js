@@ -2,6 +2,12 @@ import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema(
   {
+    username: {
+      type: String,
+      unique: true,
+      max_length: 32,
+      required: true,
+    },
     email: {
       type: String,
       unique: true,
@@ -25,8 +31,12 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.static('findByEmail', function (email) {
-  return this.find({ email });
-});
+// userSchema.static('findByEmail', function (email) {
+//   return this.find({ email });
+// });
+
+// userSchema.static('findByUsername', function (username) {
+//   return this.find({ username });
+// });
 
 export default model('User', userSchema, 'users');

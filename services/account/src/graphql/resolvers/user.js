@@ -4,14 +4,15 @@ import bcrypt from 'bcryptjs';
 import * as authConfig from '../../config/authConfig';
 import { models } from '../../models';
 import { UserInputError } from 'apollo-server';
+import checkAuth from '../../utils/check-auth';
 import {
   validateLoginInput,
   validateRegisterInput,
 } from '../../utils/validators';
 
-const generateToken = ({ id, email }) => {
+const generateToken = ({ id, email, username }) => {
   // Create an auth token
-  return jwt.sign({ id, email }, authConfig.SECRET, {
+  return jwt.sign({ id, email, username }, authConfig.SECRET, {
     expiresIn: 86400, // 24 hours
   });
 };
@@ -53,15 +54,27 @@ export default {
 
       return { ...user.toJSON(), token };
     },
+    getAuthUser: async (_, {}, context) => {
+      // verify auth token
+      const user = await checkAuth(context);
+
+      // Create an auth token
+      const token = generateToken(user);
+
+      return { ...user.toJSON(), token };
+    },
   },
   Mutation: {
     register: async (
       _,
-      { registerInput: { email, password, confirmPassword } },
+      {
+        registerInput: { email, username, password, confirmPassword },
+      },
     ) => {
       // Validate user data
       const { errors, valid } = validateRegisterInput(
         email,
+        username,
         password,
         confirmPassword,
       );
@@ -79,12 +92,22 @@ export default {
         });
       }
 
+      user = await models.User.findOne({ username });
+      if (user) {
+        throw new UserInputError('Username is taken', {
+          errors: {
+            email: 'This Username is taken',
+          },
+        });
+      }
+
       // Hash password & create an auth token
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
 
       user = new models.User({
         email,
+        username,
         password,
         isActive: true,
       });

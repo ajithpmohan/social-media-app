@@ -1,7 +1,10 @@
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
+
+import typeDefs from './graphql/typeDefs';
+import resolvers from './graphql/resolvers';
 
 const app = express();
 
@@ -9,21 +12,10 @@ const PORT = process.env.PORT || '3000';
 
 app.use(cors());
 
-const typeDefs = gql`
-  type Query {
-    feed: String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    feed: () => 'Welcome to Feed Page',
-  },
-};
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({ req }),
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
