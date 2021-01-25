@@ -14,8 +14,8 @@ const typeDefs = gql`
     updatedAt: String!
     comments: [Comment]!
     likes: [Like]!
-    # commentCount: Number!
-    # likeCount: Number!
+    commentCount: Int!
+    likeCount: Int!
   }
 
   type Comment {
