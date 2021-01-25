@@ -71,5 +71,29 @@ export default {
       await post.delete();
       return 'Post deleted successfully';
     },
+
+    likePost: async (_, { postId }, context) => {
+      // verify auth token
+      const user = await ensureAuth(context);
+
+      const post = await models.Post.findById(postId).catch((err) => {
+        if (err.name === 'CastError') {
+          throw new UserInputError('Post not found');
+        }
+      });
+      if (!post) {
+        throw new UserInputError('Post not found');
+      }
+      if (post.likes.find((like) => like.user.id.equals(user.id))) {
+        post.likes = post.likes.filter(
+          (like) => !like.user.id.equals(user.id),
+        );
+      } else {
+        post.likes.push({ user });
+      }
+
+      await post.save();
+      return post;
+    },
   },
 };

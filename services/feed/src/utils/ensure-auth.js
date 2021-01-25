@@ -14,7 +14,7 @@ export default async ({
   const { ACCOUNT_URL } = process.env;
 
   const { data } = await axios.post(
-    `${ACCOUNT_URL}/graphql`,
+    `${ACCOUNT_URL}`,
     {
       query: `query {
         getAuthUser{
