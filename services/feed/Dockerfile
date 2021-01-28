@@ -8,7 +8,7 @@ ENV BASE_DIR=/usr/src
 ENV APP_DIR=$BASE_DIR/app
 WORKDIR $APP_DIR
 
-# add `/usr/src/app/node_modules/.bin` to $PATH
+# add `/usr/src/node_modules/.bin` to $PATH
 ENV PATH $BASE_DIR/node_modules/.bin:$PATH
 
 # install app dependencies
