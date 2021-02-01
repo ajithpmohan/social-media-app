@@ -85,9 +85,7 @@ export default {
         throw new UserInputError('Post not found');
       }
       if (post.likes.find((like) => like.user.id.equals(user.id))) {
-        post.likes = post.likes.filter(
-          (like) => !like.user.id.equals(user.id),
-        );
+        post.likes = post.likes.filter((like) => !like.user.id.equals(user.id));
       } else {
         post.likes.push({ user });
       }

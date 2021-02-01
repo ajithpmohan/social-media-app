@@ -27,7 +27,5 @@ export default async ({
       "Authorization token must be 'Bearer [token]'",
     );
   }
-  throw new AuthenticationError(
-    'Authentication header must be provided',
-  );
+  throw new AuthenticationError('Authentication header must be provided');
 };

@@ -43,12 +43,12 @@ const typeDefs = gql`
   }
 
   type Query {
-    login(loginInput: LoginInput): User!
     getAuthUser: User!
     getProfile: Profile!
   }
 
   type Mutation {
+    login(loginInput: LoginInput): User!
     register(registerInput: RegisterInput): User!
     createUpdateProfile(profileInput: ProfileInput): Profile!
   }

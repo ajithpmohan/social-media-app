@@ -10,7 +10,11 @@ const app = express();
 
 const PORT = process.env.PORT || '3000';
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.WEB_URL,
+};
+
+app.use(cors(corsOptions));
 
 const server = new ApolloServer({
   typeDefs,

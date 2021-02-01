@@ -13,10 +13,7 @@ mongoose.connect(dbConfig.DATABASE_URL, {
 
 const db = mongoose.connection;
 
-db.on(
-  'error',
-  console.error.bind(console, 'Account DB connection error:'),
-);
+db.on('error', console.error.bind(console, 'Account DB connection error:'));
 
 db.once('open', function () {
   console.log.bind(console, 'Account DB connected');

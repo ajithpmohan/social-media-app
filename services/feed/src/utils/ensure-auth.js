@@ -7,9 +7,7 @@ export default async ({
   },
 }) => {
   if (!authorization) {
-    throw new AuthenticationError(
-      'Authentication header must be provided',
-    );
+    throw new AuthenticationError('Authentication header must be provided');
   }
   const { ACCOUNT_URL } = process.env;
 

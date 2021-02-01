@@ -19,6 +19,17 @@ const generateToken = ({ id, email, username }) => {
 
 export default {
   Query: {
+    getAuthUser: async (_, {}, context) => {
+      // verify auth token
+      const user = await checkAuth(context);
+
+      // Create an auth token
+      const token = generateToken(user);
+
+      return { ...user.toJSON(), token };
+    },
+  },
+  Mutation: {
     login: async (_, { loginInput: { email, password } }) => {
       // Validate user data
       const { errors, valid } = validateLoginInput(email, password);
@@ -37,10 +48,7 @@ export default {
         });
       }
 
-      const passwordIsMatch = await bcrypt.compare(
-        password,
-        user.password,
-      );
+      const passwordIsMatch = await bcrypt.compare(password, user.password);
       if (!passwordIsMatch) {
         throw new UserInputError('Wrong Credentials', {
           errors: {
@@ -54,22 +62,9 @@ export default {
 
       return { ...user.toJSON(), token };
     },
-    getAuthUser: async (_, {}, context) => {
-      // verify auth token
-      const user = await checkAuth(context);
-
-      // Create an auth token
-      const token = generateToken(user);
-
-      return { ...user.toJSON(), token };
-    },
-  },
-  Mutation: {
     register: async (
       _,
-      {
-        registerInput: { email, username, password, confirmPassword },
-      },
+      { registerInput: { email, username, password, confirmPassword } },
     ) => {
       // Validate user data
       const { errors, valid } = validateRegisterInput(

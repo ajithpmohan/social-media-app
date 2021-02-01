@@ -6,8 +6,12 @@ export const validateRegisterInput = (
 ) => {
   const errors = {};
 
-  if (username.trim() === '') {
+  if (username.trim().length !== username.length) {
+    errors.username = "Username don't allow leading and trailing spaces";
+  } else if (username === '') {
     errors.username = 'Username must not be empty';
+  } else if (username.length < 8 || username.length > 16) {
+    errors.username = 'Username must be between 8 to 16 characters';
   }
 
   if (email.trim() === '') {
@@ -19,8 +23,12 @@ export const validateRegisterInput = (
     }
   }
 
-  if (password.trim() === '') {
+  if (password.trim().length !== password.length) {
+    errors.password = "Password don't allow leading and trailing spaces";
+  } else if (password === '') {
     errors.password = 'Password must not be empty';
+  } else if (password.length < 6) {
+    errors.password = 'Password must be atleast 6 letters long';
   } else if (password !== confirmPassword) {
     errors.confirmPassword = 'Password must match';
   }
