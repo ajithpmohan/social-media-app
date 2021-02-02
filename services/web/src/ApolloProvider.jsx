@@ -7,6 +7,7 @@ import {
 } from '@apollo/client';
 
 import App from 'components/App';
+import { AuthCtxProvider } from 'contextAPI';
 
 const account = new ApolloClient({
   cache: new InMemoryCache(),
@@ -30,7 +31,9 @@ const client = { account, feed };
 
 export default (
   <ApolloProvider client={client}>
-    <App />
+    <AuthCtxProvider>
+      <App />
+    </AuthCtxProvider>
   </ApolloProvider>
 );
 

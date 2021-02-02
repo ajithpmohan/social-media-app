@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { gql, useMutation, useApolloClient } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -11,10 +11,12 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
+import { AuthCtx } from 'contextAPI';
 import * as ROUTES from 'constants/routes';
 
 const Register = () => {
   const { account } = useApolloClient();
+  const { login } = useContext(AuthCtx);
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -34,12 +36,9 @@ const Register = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     client: account,
     variables: user,
-    onCompleted({ register: { id, email, username, token } }) {
-      localStorage.setItem(
-        'authUser',
-        JSON.stringify({ isAuth: true, id, email, username, token }),
-      );
-      history.push(ROUTES.HOME);
+    onCompleted({ register: payload }) {
+      login(payload);
+      history.push(ROUTES.TIMELINE);
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
