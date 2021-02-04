@@ -4,7 +4,7 @@ const profileSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'users',
+      ref: 'User',
       unique: true,
       required: true,
     },
@@ -21,6 +21,8 @@ const profileSchema = new Schema(
         ret.fullName = doc.fullName;
         ret.dob = ret.dob?.toISOString() || '';
         ret.avatar = ret.avatar || '';
+        delete ret.firstName;
+        delete ret.lastName;
         delete ret._id;
         delete ret.__v;
         return ret;
@@ -28,6 +30,16 @@ const profileSchema = new Schema(
     },
   },
 );
+
+// Always populate the user field
+const userPopulate = function () {
+  this.populate('user');
+};
+
+profileSchema
+  .pre('find', userPopulate)
+  .pre('findOne', userPopulate)
+  .pre('findOneAndUpdate', userPopulate);
 
 profileSchema
   .virtual('fullName')

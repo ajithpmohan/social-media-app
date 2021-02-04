@@ -18,7 +18,7 @@ const userSchema = new Schema(
     isActive: { type: Boolean, required: true },
   },
   {
-    timestamps: true,
+    timestamps: { updatedAt: false },
     toJSON: {
       transform: (doc, ret) => {
         ret.id = ret._id;

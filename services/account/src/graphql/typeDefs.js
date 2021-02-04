@@ -7,7 +7,6 @@ const typeDefs = gql`
     username: String!
     token: String!
     createdAt: String!
-    updatedAt: String!
     isActive: Boolean!
   }
 
@@ -26,11 +25,9 @@ const typeDefs = gql`
   type Profile {
     id: ID!
     fullName: String!
-    firstName: String!
-    lastName: String!
     avatar: String!
     dob: String!
-    user: String!
+    user: User!
     createdAt: String!
     updatedAt: String!
   }
