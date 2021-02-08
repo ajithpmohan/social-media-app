@@ -7,5 +7,6 @@
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "workbench.colorTheme": "Shades of Purple"
 }

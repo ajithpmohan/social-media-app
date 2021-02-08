@@ -1,10 +1,16 @@
-import postResolvers from './post';
 import commentResolvers from './comment';
+import likeResolvers from './like';
+import postResolvers from './post';
 
 export default {
   Post: {
-    commentCount: (parent) => parent.comments.length,
-    likeCount: (parent) => parent.likes.length,
+    ...postResolvers.Post,
+  },
+  Comment: {
+    ...commentResolvers.Comment,
+  },
+  Like: {
+    ...likeResolvers.Like,
   },
   Query: {
     ...postResolvers.Query,
@@ -12,5 +18,6 @@ export default {
   Mutation: {
     ...postResolvers.Mutation,
     ...commentResolvers.Mutation,
+    ...likeResolvers.Mutation,
   },
 };

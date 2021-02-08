@@ -7,10 +7,9 @@
 * Microservice Architecture
 * Docker
 * Node.js
-* GraphQL
+* Apollo GraphQL
 * Express.js
 * React.js
-* TypeScript
 * MongoDB & Mongoose
 
 ## Usage
@@ -33,6 +32,6 @@ You need **Docker Engine** and **Docker Compose**. Install it from [Docker Websi
 
 ## Access the services in the development mode.
 
-Open [http://localhost:5000](http://localhost:5000) to view account service in the browser.
+Open [http://localhost:5002](http://localhost:5002) to view server side in the browser.
 
-Open [http://localhost:5001](http://localhost:5001) to view feed service in the browser.
+Open [http://localhost:5003](http://localhost:5003) to view client side in the browser.

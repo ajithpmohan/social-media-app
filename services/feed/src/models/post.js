@@ -4,12 +4,9 @@ const postSchema = new Schema(
   {
     body: { type: String, max_length: 2048, required: true },
     user: {
-      id: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-        required: true,
-      },
-      username: { type: String, required: true },
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
     comments: [
       {
@@ -17,12 +14,9 @@ const postSchema = new Schema(
           {
             body: { type: String, max_length: 2048, required: true },
             user: {
-              id: {
-                type: Schema.Types.ObjectId,
-                ref: 'users',
-                required: true,
-              },
-              username: { type: String, required: true },
+              type: Schema.Types.ObjectId,
+              ref: 'User',
+              required: true,
             },
           },
           { timestamps: true },
@@ -34,12 +28,9 @@ const postSchema = new Schema(
         type: new Schema(
           {
             user: {
-              id: {
-                type: Schema.Types.ObjectId,
-                ref: 'users',
-                required: true,
-              },
-              username: { type: String, required: true },
+              type: Schema.Types.ObjectId,
+              ref: 'User',
+              required: true,
             },
           },
           { timestamps: true },

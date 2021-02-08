@@ -1,9 +1,8 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-  type User {
-    id: ID!
-    username: String!
+  extend type User @key(fields: "id") {
+    id: ID! @external
   }
 
   type Post {
@@ -33,7 +32,7 @@ const typeDefs = gql`
     updatedAt: String!
   }
 
-  type Query {
+  extend type Query {
     getPosts: [Post]!
     getPost(postId: ID!): Post!
   }

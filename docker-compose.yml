@@ -25,10 +25,19 @@ services:
     # Port 9229 is the default NodeJS debugging port.
     expose:
       - 9229
-    depends_on:
-      - account
-    links:
-      - account
+  gateway:
+    build: ./services/gateway/
+    image: docker.pkg.github.com/ajithpmohan/social-media-app/gateway:1.0
+    container_name: gateway
+    restart: always
+    volumes:
+      - ./services/gateway:/usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - "5002:5000"
+    # Port 9229 is the default NodeJS debugging port.
+    expose:
+      - 9229
   web:
     build: ./services/web/
     image: docker.pkg.github.com/ajithpmohan/social-media-app/web:1.0
@@ -37,7 +46,4 @@ services:
       - ./services/web:/usr/src/app
       - /usr/src/app/node_modules/
     ports:
-      - "5002:5000"
-    depends_on:
-      - account
-      - feed
+      - "5003:5000"

@@ -15,7 +15,7 @@ export default async ({
     `${ACCOUNT_URL}`,
     {
       query: `query {
-        getAuthUser{
+        me {
           id
           username
         }
@@ -23,6 +23,7 @@ export default async ({
     },
     { headers: { Authorization: authorization } },
   );
+
   const { errors } = data;
   if (errors?.length) {
     errors.map((err) => {
@@ -32,7 +33,7 @@ export default async ({
     });
   }
   const {
-    data: { getAuthUser },
+    data: { me },
   } = data;
-  return getAuthUser;
+  return me;
 };

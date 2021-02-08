@@ -9,25 +9,14 @@ import {
 import App from 'components/App';
 import { AuthCtxProvider } from 'contextAPI';
 
-const account = new ApolloClient({
+const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: createHttpLink({
-    uri: `${process.env.REACT_APP_ACCOUNT_API}graphql`,
+    uri: process.env.REACT_APP_GATEWAY_API,
   }),
-  name: 'account',
+  name: 'server',
   version: '1.0',
 });
-
-const feed = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: createHttpLink({
-    uri: `${process.env.REACT_APP_FEED_API}graphql`,
-  }),
-  name: 'feed ',
-  version: '1.0',
-});
-
-const client = { account, feed };
 
 export default (
   <ApolloProvider client={client}>
@@ -36,11 +25,3 @@ export default (
     </AuthCtxProvider>
   </ApolloProvider>
 );
-
-// export default (
-//   <React.StrictMode>
-//     <ApolloProvider client={client}>
-//       <App />
-//     </ApolloProvider>
-//   </React.StrictMode>
-// );

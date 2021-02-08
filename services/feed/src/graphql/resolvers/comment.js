@@ -4,10 +4,15 @@ import ensureAuth from '../../utils/ensure-auth';
 import validateMessage from '../../utils/validator';
 
 export default {
+  Comment: {
+    user: (comment) => {
+      return { __typename: 'User', id: comment.user };
+    },
+  },
   Mutation: {
     createComment: async (_, { postId, body }, context) => {
       // verify auth token
-      const user = await ensureAuth(context);
+      const { id: user } = await ensureAuth(context);
 
       // validate post data
       const { errors, valid } = validateMessage(body);
@@ -35,7 +40,7 @@ export default {
 
     deleteComment: async (_, { postId, commentId }, context) => {
       // verify auth token
-      const { id } = await ensureAuth(context);
+      const { id: user } = await ensureAuth(context);
 
       const post = await models.Post.findById(postId).catch((err) => {
         if (err.name === 'CastError') {
@@ -52,7 +57,7 @@ export default {
       if (commentIndex === -1) {
         throw new AuthenticationError('Comment not found');
       }
-      if (!post.comments[commentIndex]?.user.id.equals(id)) {
+      if (!post.comments[commentIndex]?.user.equals(user)) {
         throw new AuthenticationError('Action not allowed');
       }
 

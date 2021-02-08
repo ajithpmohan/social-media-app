@@ -18,8 +18,14 @@ const generateToken = ({ id, email, username }) => {
 };
 
 export default {
+  User: {
+    __resolveReference: async (ref) => {
+      const user = await models.User.findById(ref.id);
+      return { ...user.toJSON() };
+    },
+  },
   Query: {
-    getAuthUser: async (_, {}, context) => {
+    me: async (_, {}, context) => {
       // verify auth token
       const user = await checkAuth(context);
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { gql, useMutation, useApolloClient } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import {
   Button,
@@ -15,7 +15,6 @@ import { AuthCtx } from 'contextAPI';
 import * as ROUTES from 'constants/routes';
 
 const Register = () => {
-  const { account } = useApolloClient();
   const { login } = useContext(AuthCtx);
   const history = useHistory();
 
@@ -34,14 +33,15 @@ const Register = () => {
     user.confirmPassword === '';
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    client: account,
     variables: user,
     onCompleted({ register: payload }) {
       login(payload);
       history.push(ROUTES.TIMELINE);
     },
     onError(err) {
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      if (err.graphQLErrors.length) {
+        setErrors(err.graphQLErrors[0]?.extensions.exception.errors);
+      }
     },
   });
 
@@ -71,7 +71,7 @@ const Register = () => {
               iconPosition="left"
               placeholder="Username"
               value={user.username}
-              error={errors.username ? true : false}
+              error={errors?.username ? true : false}
               onChange={(e) => setUser({ ...user, username: e.target.value })}
             />
             <Form.Input
@@ -82,7 +82,7 @@ const Register = () => {
               iconPosition="left"
               placeholder="Email"
               value={user.email}
-              error={errors.email ? true : false}
+              error={errors?.email ? true : false}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
             <Form.Input
@@ -93,7 +93,7 @@ const Register = () => {
               iconPosition="left"
               placeholder="Password"
               value={user.password}
-              error={errors.password ? true : false}
+              error={errors?.password ? true : false}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
             />
             <Form.Input
