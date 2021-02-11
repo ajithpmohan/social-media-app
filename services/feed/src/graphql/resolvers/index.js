@@ -9,11 +9,9 @@ export default {
   Comment: {
     ...commentResolvers.Comment,
   },
-  Like: {
-    ...likeResolvers.Like,
-  },
   Query: {
     ...postResolvers.Query,
+    ...commentResolvers.Query,
   },
   Mutation: {
     ...postResolvers.Mutation,

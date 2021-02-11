@@ -3,8 +3,14 @@ import { models } from '../../models';
 import checkAuth from '../../utils/check-auth';
 
 export default {
+  Profile: {
+    __resolveReference: async (ref) => {
+      const profile = await models.Profile.findById(ref.id);
+      return { ...profile.toJSON() };
+    },
+  },
   Query: {
-    getProfile: async (_, {}, context) => {
+    me: async (_, {}, context) => {
       const user = await checkAuth(context);
 
       const profile = await models.Profile.findOne({ user }).exec();

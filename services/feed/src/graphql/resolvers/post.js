@@ -5,11 +5,11 @@ import validateMessage from '../../utils/validator';
 
 export default {
   Post: {
-    user: (post) => {
-      return { __typename: 'User', id: post.user };
+    author: (post) => {
+      return { __typename: 'Profile', id: post.author };
     },
-    commentCount: (post) => post.comments.length,
     likeCount: (post) => post.likes.length,
+    commentCount: (post) => post.comments?.length || 0,
   },
 
   Query: {
@@ -40,7 +40,7 @@ export default {
   Mutation: {
     createPost: async (_, { body }, context) => {
       // verify auth token
-      const { id: user } = await ensureAuth(context);
+      const { id: author } = await ensureAuth(context);
 
       // validate post data
       const { errors, valid } = validateMessage(body);
@@ -52,7 +52,7 @@ export default {
       body = body.trim();
 
       // create post
-      const post = new models.Post({ body, user });
+      const post = new models.Post({ body, author });
 
       await post.save();
       return post;
@@ -60,7 +60,7 @@ export default {
 
     deletePost: async (_, { postId }, context) => {
       // verify auth token
-      const { id: user } = await ensureAuth(context);
+      const { id: author } = await ensureAuth(context);
 
       const post = await models.Post.findById(postId).catch((err) => {
         if (err.name === 'CastError') {
@@ -72,11 +72,13 @@ export default {
       }
 
       // verify that authUser is the owner
-      if (!post.user.equals(user)) {
+      if (!post.author.equals(author)) {
         throw new AuthenticationError('Action not allowed');
       }
 
+      await models.Comment.deleteMany({ post: post.id });
       await post.delete();
+
       return 'Post deleted successfully';
     },
   },

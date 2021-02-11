@@ -1,47 +1,49 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-  extend type User @key(fields: "id") {
+  extend type Profile @key(fields: "id") {
     id: ID! @external
   }
 
   type Post {
     id: ID!
     body: String!
-    user: User!
+    author: Profile!
     createdAt: String!
-    updatedAt: String!
-    comments: [Comment]!
-    likes: [Like]!
-    commentCount: Int!
     likeCount: Int!
+    likes: [Like]
+    commentCount: Int!
+    comments: [Comment]
   }
 
   type Comment {
     id: ID!
     body: String!
-    user: User!
+    author: Profile!
     createdAt: String!
-    updatedAt: String!
+    post: Post!
+    ancestors: [Comment]
+    replies: [Comment]
+    replyCount: Int!
   }
 
   type Like {
     id: ID!
-    user: User!
+    author: ID!
     createdAt: String!
-    updatedAt: String!
   }
 
   extend type Query {
     getPosts: [Post]!
     getPost(postId: ID!): Post!
+    getComment(commentId: ID): Comment!
   }
 
   type Mutation {
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
-    createComment(postId: ID!, body: String!): Post!
-    deleteComment(postId: ID!, commentId: ID!): Post!
+    createComment(postId: ID!, commentId: ID, body: String!): Comment!
+    deleteComment(postId: ID!, commentId: ID!): String!
     likePost(postId: ID!): Post!
   }
 `;

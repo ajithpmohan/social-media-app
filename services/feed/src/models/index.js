@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import * as dbConfig from '../config/dbConfig';
 import Post from './post';
+import Comment from './comment';
 
 mongoose.connect(dbConfig.DATABASE_URL, {
   useNewUrlParser: true,
@@ -18,6 +19,6 @@ db.once('open', function () {
   console.log.bind(console, 'Feed DB connected');
 });
 
-export const models = { Post };
+export const models = { Post, Comment };
 
 export default { db };

@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-  type User @key(fields: "id") {
+  type User {
     id: ID!
     email: String!
     username: String!
@@ -10,19 +10,7 @@ const typeDefs = gql`
     isActive: Boolean!
   }
 
-  input RegisterInput {
-    email: String!
-    username: String!
-    password: String!
-    confirmPassword: String!
-  }
-
-  input LoginInput {
-    email: String!
-    password: String!
-  }
-
-  type Profile {
+  type Profile @key(fields: "id") {
     id: ID!
     fullName: String!
     avatar: String!
@@ -30,6 +18,18 @@ const typeDefs = gql`
     user: User!
     createdAt: String!
     updatedAt: String!
+  }
+
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
+  input RegisterInput {
+    email: String!
+    username: String!
+    password: String!
+    confirmPassword: String!
   }
 
   input ProfileInput {
@@ -40,8 +40,7 @@ const typeDefs = gql`
   }
 
   extend type Query {
-    me: User!
-    getProfile: Profile!
+    me: Profile!
   }
 
   type Mutation {

@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 import * as authConfig from '../../config/authConfig';
 import { models } from '../../models';
 import { UserInputError } from 'apollo-server';
-import checkAuth from '../../utils/check-auth';
 import {
   validateLoginInput,
   validateRegisterInput,
@@ -18,23 +17,6 @@ const generateToken = ({ id, email, username }) => {
 };
 
 export default {
-  User: {
-    __resolveReference: async (ref) => {
-      const user = await models.User.findById(ref.id);
-      return { ...user.toJSON() };
-    },
-  },
-  Query: {
-    me: async (_, {}, context) => {
-      // verify auth token
-      const user = await checkAuth(context);
-
-      // Create an auth token
-      const token = generateToken(user);
-
-      return { ...user.toJSON(), token };
-    },
-  },
   Mutation: {
     login: async (_, { loginInput: { email, password } }) => {
       // Validate user data

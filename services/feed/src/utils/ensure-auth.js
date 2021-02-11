@@ -17,7 +17,6 @@ export default async ({
       query: `query {
         me {
           id
-          username
         }
       } `,
     },
