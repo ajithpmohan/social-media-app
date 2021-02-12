@@ -8,6 +8,7 @@ import {
   validateLoginInput,
   validateRegisterInput,
 } from '../../utils/validators';
+import checkAuth from '../../utils/check-auth';
 
 const generateToken = ({ id, email, username }) => {
   // Create an auth token
@@ -17,6 +18,19 @@ const generateToken = ({ id, email, username }) => {
 };
 
 export default {
+  Profile: {
+    __resolveReference: async (ref) => {
+      const user = await models.User.findById(ref.id);
+      return user.toJSON();
+    },
+  },
+  Query: {
+    me: async (_, {}, context) => {
+      const user = await checkAuth(context);
+
+      return user.toJSON();
+    },
+  },
   Mutation: {
     login: async (_, { loginInput: { email, password } }) => {
       // Validate user data
@@ -52,12 +66,12 @@ export default {
     },
     register: async (
       _,
-      { registerInput: { email, username, password, confirmPassword } },
+      { registerInput: { name, email, password, confirmPassword } },
     ) => {
       // Validate user data
       const { errors, valid } = validateRegisterInput(
+        name,
         email,
-        username,
         password,
         confirmPassword,
       );
@@ -74,33 +88,26 @@ export default {
           },
         });
       }
-
-      user = await models.User.findOne({ username });
-      if (user) {
-        throw new UserInputError('Username is taken', {
-          errors: {
-            email: 'This Username is taken',
-          },
-        });
-      }
+      const username = email.split('@')[0];
 
       // Hash password & create an auth token
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
 
       user = new models.User({
+        name,
         email,
         username,
         password,
         isActive: true,
       });
 
-      const res = await user.save();
+      await user.save();
 
       // Create an auth token
-      const token = generateToken(res);
+      const token = generateToken(user);
 
-      return { ...res.toJSON(), token };
+      return { ...user.toJSON(), token };
     },
   },
 };

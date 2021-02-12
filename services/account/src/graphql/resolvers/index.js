@@ -1,15 +1,16 @@
 import userResolvers from './user';
-import profileResolvers from './profile';
 
 export default {
   Profile: {
-    ...profileResolvers.Profile,
+    ...userResolvers.Profile,
+  },
+  User: {
+    ...userResolvers.User,
   },
   Query: {
-    ...profileResolvers.Query,
+    ...userResolvers.Query,
   },
   Mutation: {
     ...userResolvers.Mutation,
-    ...profileResolvers.Mutation,
   },
 };

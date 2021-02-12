@@ -3,14 +3,14 @@ import { Schema, model } from 'mongoose';
 const postSchema = new Schema(
   {
     body: { type: String, max_length: 2048, required: true },
-    author: { type: Schema.Types.ObjectId, ref: 'Profile', required: true },
+    author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     likes: [
       {
         type: new Schema(
           {
             author: {
               type: Schema.Types.ObjectId,
-              ref: 'Profile',
+              ref: 'User',
               required: true,
             },
           },

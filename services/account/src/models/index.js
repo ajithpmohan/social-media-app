@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 import * as dbConfig from '../config/dbConfig';
 import User from './user';
-import Profile from './profile';
 
 mongoose.connect(dbConfig.DATABASE_URL, {
   useNewUrlParser: true,
@@ -19,6 +18,6 @@ db.once('open', function () {
   console.log.bind(console, 'Account DB connected');
 });
 
-export const models = { User, Profile };
+export const models = { User };
 
 export default { db };

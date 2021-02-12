@@ -1,21 +1,24 @@
 export const validateRegisterInput = (
+  name,
   email,
-  username,
   password,
   confirmPassword,
 ) => {
   const errors = {};
 
-  if (username.trim().length !== username.length) {
-    errors.username = "Username don't allow leading and trailing spaces";
-  } else if (username === '') {
-    errors.username = 'Username must not be empty';
-  } else if (username.length < 8 || username.length > 16) {
-    errors.username = 'Username must be between 8 to 16 characters';
+  name = name.trim();
+  if (name === '') {
+    errors.name = 'Name must not be empty';
+  } else if (name.length < 4) {
+    errors.name = 'Name must be atleast 4 characters';
+  } else if (name.length > 48) {
+    errors.name = 'Name must be atmost 48 characters';
   }
 
   if (email.trim() === '') {
     errors.email = 'Email must not be empty';
+  } else if (email.length > 32) {
+    errors.email = 'Email must be atmost 32 characters';
   } else {
     const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
     if (!email.match(regEx)) {

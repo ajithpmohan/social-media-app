@@ -3,21 +3,22 @@ import { gql } from 'apollo-server-express';
 const typeDefs = gql`
   type User {
     id: ID!
+    name: String!
     email: String!
     username: String!
-    token: String!
+    avatar: String!
+    dob: String!
+    isActive: String!
     createdAt: String!
-    isActive: Boolean!
+    updatedAt: String!
+    token: String!
   }
 
   type Profile @key(fields: "id") {
     id: ID!
-    fullName: String!
+    name: String!
+    username: String!
     avatar: String!
-    dob: String!
-    user: User!
-    createdAt: String!
-    updatedAt: String!
   }
 
   input LoginInput {
@@ -26,17 +27,10 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
+    name: String!
     email: String!
-    username: String!
     password: String!
     confirmPassword: String!
-  }
-
-  input ProfileInput {
-    firstName: String!
-    lastName: String!
-    avatar: String
-    dob: String
   }
 
   extend type Query {
@@ -46,7 +40,6 @@ const typeDefs = gql`
   type Mutation {
     login(loginInput: LoginInput): User!
     register(registerInput: RegisterInput): User!
-    createUpdateProfile(profileInput: ProfileInput): Profile!
   }
 `;
 

@@ -2,28 +2,23 @@ import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema(
   {
-    username: {
-      type: String,
-      unique: true,
-      max_length: 32,
-      required: true,
-    },
-    email: {
-      type: String,
-      unique: true,
-      max_length: 32,
-      required: true,
-    },
+    name: { type: String, max_length: 48, required: true },
+    email: { type: String, unique: true, max_length: 32, required: true },
+    username: { type: String, unique: true, max_length: 32, required: true },
     password: { type: String, required: true },
+    avatar: { data: Buffer, Contenttype: String },
+    dob: { type: Date },
     isActive: { type: Boolean, required: true },
   },
   {
-    timestamps: { updatedAt: false },
+    timestamps: true,
     toJSON: {
       transform: (doc, ret) => {
+        ret.dob = ret.dob?.toISOString() || '';
+        ret.avatar = ret.avatar || '';
         ret.id = ret._id;
-        delete ret.password;
         delete ret._id;
+        delete ret.password;
         delete ret.__v;
         return ret;
       },
