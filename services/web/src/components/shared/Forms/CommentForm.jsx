@@ -1,70 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Feed, Form, Modal } from 'semantic-ui-react';
 
 import { CommentButton } from 'components/shared/Buttons';
 import { PostCard } from 'components/shared/Cards';
-
-const CREATE_COMMENT = gql`
-  mutation CreateComment($postId: ID!, $body: String!) {
-    createComment(postId: $postId, body: $body) {
-      id
-      body
-      author {
-        id
-        name
-        username
-        avatar
-      }
-      createdAt
-      post {
-        id
-        body
-        author {
-          id
-          name
-          username
-          avatar
-        }
-        createdAt
-        commentCount
-        likeCount
-        likes {
-          id
-          author
-          createdAt
-        }
-      }
-      ancestors {
-        id
-        body
-        author {
-          id
-          name
-          username
-          avatar
-        }
-        createdAt
-        replyCount
-      }
-      replyCount
-      replies {
-        id
-        body
-        author {
-          id
-          name
-          username
-          avatar
-        }
-        createdAt
-        replyCount
-      }
-    }
-  }
-`;
+import { GET_POSTS, CREATE_COMMENT } from 'schemas';
 
 const CommentForm = ({ post, commentCount }) => {
   const [open, setOpen] = useState(false);
@@ -72,6 +14,14 @@ const CommentForm = ({ post, commentCount }) => {
   const [errors, setErrors] = useState({});
 
   const [createComment] = useMutation(CREATE_COMMENT, {
+    update(cache, { data }) {
+      const newPost = data?.createComment.post;
+      const { getPosts: posts } = cache.readQuery({ query: GET_POSTS });
+      const updatedPosts = posts.map((post) =>
+        post.id === newPost.id ? newPost : post,
+      );
+      cache.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } });
+    },
     onCompleted(data) {
       setText('');
       setOpen(false);

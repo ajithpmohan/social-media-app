@@ -20,13 +20,4 @@ const commentSchema = new Schema(
   },
 );
 
-commentSchema.pre('findOne', function () {
-  this.populate('post');
-});
-
-/* Time Consuming - better way is populated by graphql */
-// commentSchema.pre('findOne', function () {
-//   this.populate('ancestors');
-// });
-
 export default model('Comment', commentSchema, 'comments');

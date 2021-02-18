@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import {
   Button,
@@ -11,11 +11,12 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
-import { AuthCtx } from 'contextAPI';
+import { AuthContext } from 'contextAPI';
 import * as ROUTES from 'constants/routes';
+import { REGISTER_USER } from 'schemas';
 
 const Register = () => {
-  const { login } = useContext(AuthCtx);
+  const { login } = useContext(AuthContext);
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -130,28 +131,5 @@ const Register = () => {
     </Grid>
   );
 };
-
-const REGISTER_USER = gql`
-  mutation register(
-    $name: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        name: $name
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
-      id
-      name
-      username
-      token
-    }
-  }
-`;
 
 export default Register;

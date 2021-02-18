@@ -8,6 +8,10 @@ export default {
     author: (comment) => {
       return { __typename: 'Profile', id: comment.author };
     },
+    post: async (comment) => {
+      await comment.populate('post').execPopulate();
+      return comment.post;
+    },
     ancestors: async (comment) => {
       await comment.populate('ancestors').execPopulate();
       return comment.ancestors;

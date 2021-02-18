@@ -1,6 +1,6 @@
 import React from 'react';
-import { AuthCtxProvider } from './provider';
+import AuthProvider from './AuthProvider';
 
-export const AuthCtx = React.createContext(null);
+export const AuthContext = React.createContext(null);
 
-export { AuthCtxProvider };
+export { AuthProvider };

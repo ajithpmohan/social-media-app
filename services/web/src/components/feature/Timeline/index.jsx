@@ -1,31 +1,9 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Feed } from 'semantic-ui-react';
 
 import { PostCard } from 'components/shared/Cards';
-
-const GET_POSTS = gql`
-  query posts {
-    getPosts {
-      id
-      body
-      author {
-        id
-        username
-        name
-        avatar
-      }
-      createdAt
-      commentCount
-      likeCount
-      likes {
-        id
-        author
-        createdAt
-      }
-    }
-  }
-`;
+import { GET_POSTS } from 'schemas';
 
 const Timeline = () => {
   const { loading, error, data } = useQuery(GET_POSTS);

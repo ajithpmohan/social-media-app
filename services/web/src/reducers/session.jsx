@@ -1,4 +1,4 @@
-const sessionReducer = (state, action) => {
+export default (state, action) => {
   switch (action.type) {
     case 'SET_AUTHUSER': {
       return {
@@ -16,5 +16,3 @@ const sessionReducer = (state, action) => {
       return state;
   }
 };
-
-export default sessionReducer;

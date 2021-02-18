@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Container, Input, Menu } from 'semantic-ui-react';
 
-import { AuthCtx } from 'contextAPI';
+import { AuthContext } from 'contextAPI';
 import * as ROUTES from 'constants/routes';
 
 const MenuBar = () => {
-  const { authUser } = useContext(AuthCtx);
+  const { authUser } = useContext(AuthContext);
   const { pathname } = useLocation();
 
   const path = pathname === '/' ? 'login' : pathname.split('/')[1];
@@ -55,7 +55,7 @@ const PublicMenuItem = ({ activeItem, handleItemClick }) => {
   );
 };
 const PrivateMenuItem = ({ activeItem, handleItemClick }) => {
-  const { logout } = useContext(AuthCtx);
+  const { logout } = useContext(AuthContext);
   const history = useHistory();
   return (
     <>

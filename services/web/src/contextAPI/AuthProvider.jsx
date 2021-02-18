@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { AuthCtx } from 'contextAPI';
+import { AuthContext } from 'contextAPI';
 import { sessionReducer } from 'reducers';
 import * as ROUTES from 'constants/routes';
 
-export const AuthCtxProvider = ({ children }) => {
-  const initialData = {
+const AuthProvider = ({ children }) => {
+  const initialState = {
     authUser: JSON.parse(
       localStorage.getItem('authUser') || '{"isAuth":false}',
     ),
@@ -14,7 +14,7 @@ export const AuthCtxProvider = ({ children }) => {
 
   const [authState, authDispatch] = React.useReducer(
     sessionReducer,
-    initialData,
+    initialState,
   );
 
   const login = (payload) => {
@@ -32,12 +32,14 @@ export const AuthCtxProvider = ({ children }) => {
   };
 
   return (
-    <AuthCtx.Provider value={{ ...authState, login, logout }}>
+    <AuthContext.Provider value={{ ...authState, login, logout }}>
       {children}
-    </AuthCtx.Provider>
+    </AuthContext.Provider>
   );
 };
 
-AuthCtxProvider.propTypes = {
+AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
+
+export default AuthProvider;

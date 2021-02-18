@@ -8,7 +8,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 
 import App from 'components/feature/App';
-import { AuthCtxProvider } from 'contextAPI';
+import { AuthProvider } from 'contextAPI';
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_GATEWAY_API,
@@ -35,8 +35,8 @@ const client = new ApolloClient({
 
 export default (
   <ApolloProvider client={client}>
-    <AuthCtxProvider>
+    <AuthProvider>
       <App />
-    </AuthCtxProvider>
+    </AuthProvider>
   </ApolloProvider>
 );
