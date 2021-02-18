@@ -28,7 +28,7 @@ export const AuthCtxProvider = ({ children }) => {
   const logout = (history) => {
     localStorage.removeItem('authUser');
     authDispatch({ type: 'REMOVE_AUTHUSER' });
-    history.push(ROUTES.HOME);
+    history.push(ROUTES.LOGIN);
   };
 
   return (

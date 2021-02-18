@@ -9,11 +9,11 @@ const PublicRoute = ({ component: Component, ...rest }) => {
 
   return (
     // Show the component only when the user is not logged in
-    // Otherwise, redirect the user to home page
+    // Otherwise, redirect the user to login page
     <Route
       {...rest}
       render={(props) =>
-        authUser ? <Redirect to={ROUTES.HOME} /> : <Component {...props} />
+        authUser ? <Redirect to={ROUTES.LOGIN} /> : <Component {...props} />
       }
     />
   );

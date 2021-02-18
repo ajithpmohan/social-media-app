@@ -21,6 +21,7 @@ const postSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
     // So `res.json()` and other `JSON.stringify()` functions include virtuals
     toJSON: { virtuals: true },
     // So `toObject()` output includes virtuals

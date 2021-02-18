@@ -19,7 +19,7 @@ const Register = () => {
   const history = useHistory();
 
   const [user, setUser] = useState({
-    username: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -27,7 +27,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   const disabled =
-    user.username === '' ||
+    user.name === '' ||
     user.email === '' ||
     user.password === '' ||
     user.confirmPassword === '';
@@ -67,12 +67,12 @@ const Register = () => {
             <Form.Input
               fluid
               icon="user"
-              name="username"
+              name="name"
               iconPosition="left"
-              placeholder="Username"
-              value={user.username}
-              error={errors?.username ? true : false}
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
+              placeholder="Name"
+              value={user.name}
+              error={errors?.name ? true : false}
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
             />
             <Form.Input
               fluid
@@ -109,7 +109,7 @@ const Register = () => {
               }
             />
             <Button color="blue" fluid size="large" disabled={disabled}>
-              Login
+              Register
             </Button>
           </Form>
           {Object.keys(errors).length > 0 && (
@@ -133,21 +133,21 @@ const Register = () => {
 
 const REGISTER_USER = gql`
   mutation register(
-    $username: String!
+    $name: String!
     $email: String!
     $password: String!
     $confirmPassword: String!
   ) {
     register(
       registerInput: {
-        username: $username
+        name: $name
         email: $email
         password: $password
         confirmPassword: $confirmPassword
       }
     ) {
       id
-      email
+      name
       username
       token
     }

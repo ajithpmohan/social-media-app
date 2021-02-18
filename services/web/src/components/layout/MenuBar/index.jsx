@@ -10,20 +10,13 @@ const MenuBar = () => {
   const { authUser } = useContext(AuthCtx);
   const { pathname } = useLocation();
 
-  const path = pathname === '/' ? 'home' : pathname.split('/')[1];
+  const path = pathname === '/' ? 'login' : pathname.split('/')[1];
   const [activeItem, setactiveItem] = useState(path);
   const handleItemClick = (e, { name }) => setactiveItem(name);
 
   return (
     <Menu pointing secondary size="massive" color="teal">
       <Container>
-        <Menu.Item
-          name="home"
-          active={activeItem === 'home'}
-          onClick={handleItemClick}
-          as={Link}
-          to={ROUTES.HOME}
-        />
         {authUser.isAuth ? (
           <PrivateMenuItem
             activeItem={activeItem}
