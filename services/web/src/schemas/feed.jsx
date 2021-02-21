@@ -88,31 +88,31 @@ export const CREATE_COMMENT = gql`
           createdAt
         }
       }
-      ancestors {
-        id
-        body
-        author {
-          id
-          name
-          username
-          avatar
-        }
-        createdAt
-        replyCount
-      }
+      # ancestors {
+      #   id
+      #   body
+      #   author {
+      #     id
+      #     name
+      #     username
+      #     avatar
+      #   }
+      #   createdAt
+      #   replyCount
+      # }
       replyCount
-      replies {
-        id
-        body
-        author {
-          id
-          name
-          username
-          avatar
-        }
-        createdAt
-        replyCount
-      }
+      # replies {
+      #   id
+      #   body
+      #   author {
+      #     id
+      #     name
+      #     username
+      #     avatar
+      #   }
+      #   createdAt
+      #   replyCount
+      # }
     }
   }
 `;
@@ -136,5 +136,28 @@ export const LIKE_POST = gql`
         createdAt
       }
     }
+  }
+`;
+
+export const READ_POST = gql`
+  fragment ReadPost on Post {
+    comments {
+      id
+      body
+      author {
+        id
+        name
+        avatar
+        username
+      }
+      createdAt
+      replyCount
+    }
+  }
+`;
+
+export const WRITE_POST = gql`
+  fragment WritePost on Post {
+    comments
   }
 `;

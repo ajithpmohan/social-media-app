@@ -10,10 +10,11 @@ const Post = () => {
   const { id: postId } = useParams();
   const { data, loading, error } = useQuery(GET_POST, {
     variables: { postId },
-    fetchPolicy: 'network-only',
   });
+
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
+
   const { getPost: post } = data;
   return (
     <>

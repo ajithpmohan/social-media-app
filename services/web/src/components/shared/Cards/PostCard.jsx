@@ -18,6 +18,7 @@ const PostCard = ({ post }) => {
     likes,
     likeCount,
   } = post;
+
   return (
     <>
       <Feed.Event>

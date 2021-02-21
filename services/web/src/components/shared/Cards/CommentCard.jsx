@@ -9,7 +9,7 @@ const CommentCard = ({
     author: { name, username },
     body,
     createdAt,
-    replyCount,
+    // replyCount,
   },
 }) => {
   return (
@@ -40,7 +40,7 @@ CommentCard.propTypes = {
       username: PropTypes.string.isRequired,
     }).isRequired,
     createdAt: PropTypes.string.isRequired,
-    replyCount: PropTypes.number.isRequired,
+    // replyCount: PropTypes.number.isRequired,
   }),
 };
 
