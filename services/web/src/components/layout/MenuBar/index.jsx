@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useApolloClient } from '@apollo/client';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Container, Input, Menu } from 'semantic-ui-react';
 
@@ -54,9 +55,18 @@ const PublicMenuItem = ({ activeItem, handleItemClick }) => {
     </Menu.Menu>
   );
 };
+
 const PrivateMenuItem = ({ activeItem, handleItemClick }) => {
   const { logout } = useContext(AuthContext);
+  const client = useApolloClient();
   const history = useHistory();
+
+  const handleLogout = async () => {
+    logout();
+    await client.clearStore();
+    history.push(ROUTES.LOGIN);
+  };
+
   return (
     <>
       <Menu.Item
@@ -68,7 +78,7 @@ const PrivateMenuItem = ({ activeItem, handleItemClick }) => {
       />
       <Menu.Menu position="right">
         <SearchMenuItem />
-        <Menu.Item name="logout" onClick={() => logout(history)} />
+        <Menu.Item name="logout" onClick={handleLogout} />
       </Menu.Menu>
     </>
   );

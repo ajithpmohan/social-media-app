@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthContext } from 'contextAPI';
 import { sessionReducer } from 'reducers';
-import * as ROUTES from 'constants/routes';
 
 const AuthProvider = ({ children }) => {
   const initialState = {
@@ -12,10 +11,7 @@ const AuthProvider = ({ children }) => {
     ),
   };
 
-  const [authState, authDispatch] = React.useReducer(
-    sessionReducer,
-    initialState,
-  );
+  const [authState, authDispatch] = useReducer(sessionReducer, initialState);
 
   const login = (payload) => {
     localStorage.setItem(
@@ -25,10 +21,9 @@ const AuthProvider = ({ children }) => {
     authDispatch({ type: 'SET_AUTHUSER', payload });
   };
 
-  const logout = (history) => {
+  const logout = () => {
     localStorage.removeItem('authUser');
     authDispatch({ type: 'REMOVE_AUTHUSER' });
-    history.push(ROUTES.LOGIN);
   };
 
   return (
