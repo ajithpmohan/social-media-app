@@ -118,7 +118,7 @@ export const CREATE_COMMENT = gql`
 `;
 
 export const LIKE_POST = gql`
-  mutation likePost($postId: ID!) {
+  mutation LikePost($postId: ID!) {
     likePost(postId: $postId) {
       id
       body
@@ -139,8 +139,8 @@ export const LIKE_POST = gql`
   }
 `;
 
-export const READ_POST = gql`
-  fragment ReadPost on Post {
+export const FG_COMMENTS_ON_POST = gql`
+  fragment Comments on Post {
     comments {
       id
       body
@@ -153,11 +153,5 @@ export const READ_POST = gql`
       createdAt
       replyCount
     }
-  }
-`;
-
-export const WRITE_POST = gql`
-  fragment WritePost on Post {
-    comments
   }
 `;

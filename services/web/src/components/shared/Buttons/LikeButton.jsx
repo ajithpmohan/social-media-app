@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon } from 'semantic-ui-react';
 
 import { AuthContext } from 'contextAPI';
-import { GET_POSTS, LIKE_POST } from 'schemas';
+import { LIKE_POST } from 'schemas';
 
 const LikeButton = ({ post: { postId, likes, likeCount } }) => {
   const [liked, setLiked] = useState(false);
@@ -16,17 +16,7 @@ const LikeButton = ({ post: { postId, likes, likeCount } }) => {
       : setLiked(false);
   }, [likeCount]);
 
-  const [likePost] = useMutation(LIKE_POST, {
-    variables: { postId },
-    update(cache, { data }) {
-      const newPost = data?.likePost;
-      const { getPosts: posts } = cache.readQuery({ query: GET_POSTS });
-      const updatedPosts = posts.map((post) =>
-        post.id === newPost.id ? newPost : post,
-      );
-      cache.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } });
-    },
-  });
+  const [likePost] = useMutation(LIKE_POST, { variables: { postId } });
 
   return (
     <Button as="div" labelPosition="right" onClick={() => likePost()}>

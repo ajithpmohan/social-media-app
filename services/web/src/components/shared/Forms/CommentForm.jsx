@@ -6,7 +6,7 @@ import { Button, Feed, Form, Modal } from 'semantic-ui-react';
 
 import { CommentButton } from 'components/shared/Buttons';
 import { LikeButton } from 'components/shared/Buttons';
-import { GET_POSTS, CREATE_COMMENT, READ_POST, WRITE_POST } from 'schemas';
+import { CREATE_COMMENT, FG_COMMENTS_ON_POST } from 'schemas';
 
 const CommentForm = ({
   post: {
@@ -27,24 +27,18 @@ const CommentForm = ({
     update(cache, { data }) {
       const { post, ...comment } = data?.createComment;
 
-      const { getPosts: posts } = cache.readQuery({ query: GET_POSTS });
-      const updatedPosts = posts.map((p) => (p.id === post.id ? post : p));
-
-      // Update commentCount of post whenever new comment is created.
-      cache.writeQuery({ query: GET_POSTS, data: { getPosts: updatedPosts } });
-
-      const postFg = cache.readFragment({
+      const postFragment = cache.readFragment({
         id: `Post:${post.id}`,
-        fragment: READ_POST,
+        fragment: FG_COMMENTS_ON_POST,
       });
 
-      if (postFg) {
+      if (postFragment) {
         // Update comments array of post whenever new comment is created.
         cache.writeFragment({
           id: `Post:${post.id}`,
-          fragment: WRITE_POST,
+          fragment: FG_COMMENTS_ON_POST,
           data: {
-            comments: [...postFg.comments, comment],
+            comments: [...postFragment.comments, comment],
           },
         });
       }
