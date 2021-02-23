@@ -57,9 +57,7 @@ const CommentForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    createComment({
-      variables: { postId, body: text },
-    });
+    createComment({ variables: { postId, body: text } });
   };
 
   return (
