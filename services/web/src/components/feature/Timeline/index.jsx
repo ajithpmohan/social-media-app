@@ -17,7 +17,7 @@ const Timeline = () => {
       <PostForm />
       <Header as="h3">Recent Posts</Header>
       <Divider />
-      <Feed size="small">
+      <Feed size="large">
         {data.getPosts.map((post) => (
           <PostCard post={post} key={post.id} />
         ))}

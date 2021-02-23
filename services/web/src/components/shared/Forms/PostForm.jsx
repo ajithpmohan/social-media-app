@@ -46,7 +46,7 @@ const PostForm = () => {
           onChange={({ target: { value } }) => setText(value)}
           error={errors?.body ? true : false}
         />
-        <Button content="Post" labelPosition="left" icon="edit" primary />
+        <Button content="Post" labelPosition="left" icon="feed" primary />
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">

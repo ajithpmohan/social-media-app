@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Label } from 'semantic-ui-react';
 
 import { AuthContext } from 'contextAPI';
 import { LIKE_POST } from 'schemas';
@@ -20,10 +20,12 @@ const LikeButton = ({ post: { postId, likes, likeCount } }) => {
 
   return (
     <Button as="div" labelPosition="right" onClick={() => likePost()}>
-      <Button color="linkedin">
-        {liked ? <Icon name="like" color="red" /> : <Icon name="like" />}
-        {likeCount}
+      <Button basic={liked ? false : true} color="blue">
+        <Icon name="heart" />
       </Button>
+      <Label as="a" basic pointing="left" color="blue">
+        {likeCount}
+      </Label>
     </Button>
   );
 };
