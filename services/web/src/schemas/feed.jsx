@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const GET_POSTS = gql`
   query GetPosts {
-    getPosts {
+    posts: getPosts {
       id
       body
       author {
@@ -25,7 +25,7 @@ export const GET_POSTS = gql`
 
 export const GET_POST = gql`
   query GetPost($postId: ID!) {
-    getPost(postId: $postId) {
+    post: getPost(postId: $postId) {
       id
       body
       author {
@@ -60,7 +60,7 @@ export const GET_POST = gql`
 
 export const CREATE_POST = gql`
   mutation CreatePost($body: String!) {
-    createPost(body: $body) {
+    post: createPost(body: $body) {
       id
       body
       author {
@@ -83,7 +83,7 @@ export const CREATE_POST = gql`
 
 export const CREATE_COMMENT = gql`
   mutation CreateComment($postId: ID!, $body: String!) {
-    createComment(postId: $postId, body: $body) {
+    comment: createComment(postId: $postId, body: $body) {
       id
       body
       author {
@@ -142,7 +142,7 @@ export const CREATE_COMMENT = gql`
 
 export const LIKE_POST = gql`
   mutation LikePost($postId: ID!) {
-    likePost(postId: $postId) {
+    like: likePost(postId: $postId) {
       id
       body
       author {

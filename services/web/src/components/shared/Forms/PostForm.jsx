@@ -9,14 +9,13 @@ const PostForm = () => {
   const [errors, setErrors] = useState({});
 
   const [createPost] = useMutation(CREATE_POST, {
-    update(cache, { data }) {
-      const newPost = data?.createPost;
+    update(cache, { data: { post } }) {
       const existingPosts = cache.readQuery({ query: GET_POSTS });
 
       cache.writeQuery({
         query: GET_POSTS,
         data: {
-          getPosts: [newPost, ...existingPosts?.getPosts],
+          posts: [post, ...existingPosts?.posts],
         },
       });
     },

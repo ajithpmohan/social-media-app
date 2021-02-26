@@ -15,13 +15,17 @@ const Timeline = () => {
   return (
     <>
       <PostForm />
-      <Header as="h3">Recent Posts</Header>
-      <Divider />
-      <Feed size="large">
-        {data.getPosts.map((post) => (
-          <PostCard post={post} key={post.id} />
-        ))}
-      </Feed>
+      {data.posts.length > 0 && (
+        <>
+          <Header as="h3">Recent Posts</Header>
+          <Divider />
+          <Feed size="large">
+            {data.posts.map((post) => (
+              <PostCard post={post} key={post.id} />
+            ))}
+          </Feed>
+        </>
+      )}
     </>
   );
 };

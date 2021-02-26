@@ -24,8 +24,8 @@ const CommentForm = ({
   const [errors, setErrors] = useState({});
 
   const [createComment] = useMutation(CREATE_COMMENT, {
-    update(cache, { data }) {
-      const { post, ...comment } = data?.createComment;
+    update(cache, { data: { comment } }) {
+      const { post, ...rest } = comment;
 
       const postFragment = cache.readFragment({
         id: `Post:${post.id}`,
@@ -38,7 +38,7 @@ const CommentForm = ({
           id: `Post:${post.id}`,
           fragment: FG_COMMENTS_ON_POST,
           data: {
-            comments: [...postFragment.comments, comment],
+            comments: [...postFragment.comments, rest],
           },
         });
       }

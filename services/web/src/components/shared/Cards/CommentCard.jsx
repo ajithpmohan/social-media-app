@@ -27,7 +27,7 @@ const CommentCard = ({
           </Comment.Actions>
         </Comment.Content>
       </Comment>
-      <Divider />
+      <Divider hidden />
     </>
   );
 };

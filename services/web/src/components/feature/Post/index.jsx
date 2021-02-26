@@ -15,7 +15,7 @@ const Post = () => {
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const { getPost: post } = data;
+  const { post } = data;
   return (
     <>
       <Feed size="large">
