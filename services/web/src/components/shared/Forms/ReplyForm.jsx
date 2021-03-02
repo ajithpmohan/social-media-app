@@ -5,32 +5,32 @@ import ReactTimeAgo from 'react-time-ago';
 import { Button, Feed, Form, Modal } from 'semantic-ui-react';
 
 import { CommentButton, LikeButton } from 'components/shared/Buttons';
-import { CREATE_COMMENT, LIKE_POST, Fragment } from 'schemas';
+import { CREATE_COMMENT, LIKE_COMMENT } from 'schemas';
 
-const CommentForm = ({ post }) => {
-  const { id: postId, likes, likeCount, commentCount } = post;
+const ReplyForm = ({ comment, postId }) => {
+  const { id: commentId, likes, likeCount, commentCount } = comment;
 
   const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
   const [errors, setErrors] = useState({});
 
   const [createComment] = useMutation(CREATE_COMMENT, {
-    update(cache, { data: { comment } }) {
-      const postFragment = cache.readFragment({
-        id: `Post:${postId}`,
-        fragment: Fragment.feed.comments,
-      });
-
-      if (postFragment) {
-        // Update comments array of post whenever new comment is created.
-        cache.writeFragment({
-          id: `Post:${postId}`,
-          fragment: Fragment.feed.comments,
-          data: {
-            comments: [...postFragment.comments, comment],
-          },
-        });
-      }
+    update(cache, { data }) {
+      // const { post, ...rest } = comment;
+      // const postFragment = cache.readFragment({
+      //   id: `Post:${post.id}`,
+      //   fragment: Fragment.feed.comments,
+      // });
+      // if (postFragment) {
+      //   // Update comments array of post whenever new comment is created.
+      //   cache.writeFragment({
+      //     id: `Post:${post.id}`,
+      //     fragment: Fragment.feed.comments,
+      //     data: {
+      //       comments: [...postFragment.comments, rest],
+      //     },
+      //   });
+      // }
     },
     onCompleted() {
       setText('');
@@ -46,7 +46,7 @@ const CommentForm = ({ post }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    createComment({ variables: { postId, body: text } });
+    createComment({ variables: { postId, commentId, body: text } });
   };
 
   const handleClick = (e) => {
@@ -68,7 +68,7 @@ const CommentForm = ({ post }) => {
       }
       onClick={(e) => e.stopPropagation()}
     >
-      <Modal.Header>Feed</Modal.Header>
+      <Modal.Header>Comment</Modal.Header>
       <Modal.Content scrolling>
         <Feed size="large">
           <Feed.Event>
@@ -77,26 +77,26 @@ const CommentForm = ({ post }) => {
             </Feed.Label>
             <Feed.Content>
               <Feed.Summary>
-                <Feed.User>{post.author.name}</Feed.User> @
-                {post.author.username}
+                <Feed.User>{comment.author.name}</Feed.User> @
+                {comment.author.username}
                 <Feed.Date>
                   <ReactTimeAgo
-                    date={new Date(+post.createdAt)}
+                    date={new Date(+comment.createdAt)}
                     locale="en-US"
                   />
                 </Feed.Date>
               </Feed.Summary>
               <Feed.Extra text size="huge">
-                {post.body}
+                {comment.body}
               </Feed.Extra>
               <Feed.Meta>
                 <LikeButton
-                  key={postId}
+                  key={comment}
                   feed={{
-                    feedId: postId,
+                    feedId: commentId,
                     likes,
                     likeCount,
-                    likeMutation: LIKE_POST,
+                    likeMutation: LIKE_COMMENT,
                   }}
                 />
                 <CommentButton commentCount={commentCount} />
@@ -133,8 +133,8 @@ const CommentForm = ({ post }) => {
   );
 };
 
-CommentForm.propTypes = {
-  post: PropTypes.shape({
+ReplyForm.propTypes = {
+  comment: PropTypes.shape({
     id: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     author: PropTypes.shape({
@@ -146,6 +146,7 @@ CommentForm.propTypes = {
     likes: PropTypes.arrayOf(PropTypes.object).isRequired,
     commentCount: PropTypes.number.isRequired,
   }),
+  postId: PropTypes.string.isRequired,
 };
 
-export default CommentForm;
+export default ReplyForm;

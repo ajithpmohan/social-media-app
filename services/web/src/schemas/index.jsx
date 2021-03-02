@@ -1,9 +1,13 @@
+export { Fragment } from './fragment';
+
 export {
   GET_POSTS,
   GET_POST,
   CREATE_POST,
-  CREATE_COMMENT,
   LIKE_POST,
-  FG_COMMENTS_ON_POST,
+  GET_COMMENT,
+  CREATE_COMMENT,
+  LIKE_COMMENT,
 } from './feed';
+
 export { REGISTER_USER, LOGIN_USER } from './account';

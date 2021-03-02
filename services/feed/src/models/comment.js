@@ -13,6 +13,20 @@ const commentSchema = new Schema(
       ref: 'Comment',
       required: false,
     },
+    likes: [
+      {
+        type: new Schema(
+          {
+            author: {
+              type: Schema.Types.ObjectId,
+              ref: 'User',
+              required: true,
+            },
+          },
+          { timestamps: { updatedAt: false } },
+        ),
+      },
+    ],
   },
   {
     timestamps: true,

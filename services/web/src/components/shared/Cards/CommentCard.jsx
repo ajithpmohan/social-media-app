@@ -1,47 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { useHistory } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago';
 import { Comment, Divider } from 'semantic-ui-react';
 
-const CommentCard = ({
-  comment: {
+import { LikeButton } from 'components/shared/Buttons';
+import { ReplyForm } from 'components/shared/Forms';
+import { LIKE_COMMENT } from 'schemas';
+
+const CommentCard = ({ comment, postId }) => {
+  const {
+    id: commentId,
     author: { name, username },
     body,
     createdAt,
-    // replyCount,
-  },
-}) => {
+    likes,
+    likeCount,
+  } = comment;
+
+  const history = useHistory();
+
   return (
     <>
-      <Comment>
+      <Comment className="feed-event">
         <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/joe.jpg" />
-        <Comment.Content>
+        <Comment.Content onClick={() => history.push(`/comment/${commentId}`)}>
           <Comment.Author as="a">{name}</Comment.Author> @{username}
           <Comment.Metadata>
             <ReactTimeAgo date={new Date(+createdAt)} locale="en-US" />
           </Comment.Metadata>
           <Comment.Text>{body}</Comment.Text>
           <Comment.Actions>
-            <Comment.Action>Reply</Comment.Action>
+            <LikeButton
+              key={commentId}
+              feed={{
+                feedId: commentId,
+                likes,
+                likeCount,
+                likeMutation: LIKE_COMMENT,
+              }}
+            />
+            <ReplyForm comment={comment} postId={postId} />
           </Comment.Actions>
         </Comment.Content>
       </Comment>
-      <Divider hidden />
+      <Divider />
     </>
   );
 };
 
 CommentCard.propTypes = {
   comment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     author: PropTypes.shape({
       name: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
     createdAt: PropTypes.string.isRequired,
-    // replyCount: PropTypes.number.isRequired,
+    likeCount: PropTypes.number.isRequired,
+    likes: PropTypes.arrayOf(PropTypes.object).isRequired,
   }),
+  postId: PropTypes.string.isRequired,
 };
 
 export default CommentCard;

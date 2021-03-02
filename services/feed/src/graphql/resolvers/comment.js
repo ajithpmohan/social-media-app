@@ -16,9 +16,10 @@ export default {
       await comment.populate('ancestors').execPopulate();
       return comment.ancestors;
     },
+    likeCount: (comment) => comment.likes.length,
     replies: async (comment) =>
       await models.Comment.find({ parent: comment.id }),
-    replyCount: async (comment) =>
+    repliesCount: async (comment) =>
       await models.Comment.count({ parent: comment.id }),
   },
   Query: {

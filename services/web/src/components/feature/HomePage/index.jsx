@@ -6,16 +6,17 @@ import { PostCard } from 'components/shared/Cards';
 import { PostForm } from 'components/shared/Forms';
 import { GET_POSTS } from 'schemas';
 
-const Timeline = () => {
+const HomePage = () => {
   const { loading, error, data } = useQuery(GET_POSTS);
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
+  const isPosts = data?.posts.length > 0;
   return (
     <>
       <PostForm />
-      {data.posts.length > 0 && (
+      {isPosts && (
         <>
           <Header as="h3">Recent Posts</Header>
           <Divider />
@@ -30,4 +31,4 @@ const Timeline = () => {
   );
 };
 
-export default Timeline;
+export default HomePage;

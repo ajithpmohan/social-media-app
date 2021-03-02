@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useApolloClient } from '@apollo/client';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Container, Input, Menu } from 'semantic-ui-react';
+import { Icon, Input, Menu } from 'semantic-ui-react';
 
 import { AuthContext } from 'contextAPI';
 import * as ROUTES from 'constants/routes';
@@ -16,20 +16,21 @@ const MenuBar = () => {
   const handleItemClick = (e, { name }) => setactiveItem(name);
 
   return (
-    <Menu pointing secondary size="massive" color="teal">
-      <Container>
-        {authUser.isAuth ? (
-          <PrivateMenuItem
-            activeItem={activeItem}
-            handleItemClick={handleItemClick}
-          />
-        ) : (
-          <PublicMenuItem
-            activeItem={activeItem}
-            handleItemClick={handleItemClick}
-          />
-        )}
-      </Container>
+    <Menu pointing secondary size="massive" id="navbar">
+      <Menu.Item>
+        <Icon name="twitter" size="large" color="orange" />
+      </Menu.Item>
+      {authUser.isAuth ? (
+        <PrivateMenuItem
+          activeItem={activeItem}
+          handleItemClick={handleItemClick}
+        />
+      ) : (
+        <PublicMenuItem
+          activeItem={activeItem}
+          handleItemClick={handleItemClick}
+        />
+      )}
     </Menu>
   );
 };
@@ -70,11 +71,11 @@ const PrivateMenuItem = ({ activeItem, handleItemClick }) => {
   return (
     <>
       <Menu.Item
-        name="timeline"
-        active={activeItem === 'timeline'}
+        name="home"
+        active={activeItem === 'home'}
         onClick={handleItemClick}
         as={Link}
-        to={ROUTES.TIMELINE}
+        to={ROUTES.HOME}
       />
       <Menu.Menu position="right">
         <SearchMenuItem />

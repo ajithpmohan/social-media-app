@@ -31,7 +31,7 @@ const Login = () => {
     variables: user,
     onCompleted({ login: payload }) {
       login(payload);
-      history.push(ROUTES.TIMELINE);
+      history.push(ROUTES.HOME);
     },
     onError(err) {
       if (err.graphQLErrors.length) {

@@ -23,8 +23,10 @@ const typeDefs = gql`
     createdAt: String!
     post: Post!
     ancestors: [Comment]
+    likeCount: Int!
+    likes: [Like]
     replies: [Comment]
-    replyCount: Int!
+    repliesCount: Int!
   }
 
   type Like {
@@ -42,9 +44,10 @@ const typeDefs = gql`
   type Mutation {
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
+    likePost(feedId: ID!): Post!
     createComment(postId: ID!, commentId: ID, body: String!): Comment!
     deleteComment(postId: ID!, commentId: ID!): String!
-    likePost(postId: ID!): Post!
+    likeComment(feedId: ID): Comment!
   }
 `;
 

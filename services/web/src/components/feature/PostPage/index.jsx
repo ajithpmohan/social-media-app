@@ -6,7 +6,7 @@ import { Feed, Comment } from 'semantic-ui-react';
 import { PostCard, CommentCard } from 'components/shared/Cards';
 import { GET_POST } from 'schemas';
 
-const Post = () => {
+const PostPage = () => {
   const { id: postId } = useParams();
   const { data, loading, error } = useQuery(GET_POST, {
     variables: { postId },
@@ -16,18 +16,19 @@ const Post = () => {
   if (error) return `Error! ${error.message}`;
 
   const { post } = data;
+
   return (
     <>
       <Feed size="large">
         <PostCard post={post} key={post.id} />
       </Feed>
-      <Comment.Group size="large">
+      <Comment.Group size="small">
         {post.comments.map((comment) => (
-          <CommentCard comment={comment} key={comment.id} />
+          <CommentCard comment={comment} postId={post.id} key={comment.id} />
         ))}
       </Comment.Group>
     </>
   );
 };
 
-export default Post;
+export default PostPage;

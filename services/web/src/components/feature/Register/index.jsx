@@ -37,7 +37,7 @@ const Register = () => {
     variables: user,
     onCompleted({ register: payload }) {
       login(payload);
-      history.push(ROUTES.TIMELINE);
+      history.push(ROUTES.HOME);
     },
     onError(err) {
       if (err.graphQLErrors.length) {

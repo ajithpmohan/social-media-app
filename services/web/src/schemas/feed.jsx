@@ -1,180 +1,92 @@
 import { gql } from '@apollo/client';
+import { Fragment } from 'schemas';
 
 export const GET_POSTS = gql`
   query GetPosts {
     posts: getPosts {
-      id
-      body
-      author {
-        id
-        username
-        name
-        avatar
-      }
-      createdAt
-      commentCount
-      likeCount
-      likes {
-        id
-        author
-        createdAt
-      }
+      ...Post
     }
   }
+  ${Fragment.feed.post}
 `;
 
 export const GET_POST = gql`
   query GetPost($postId: ID!) {
     post: getPost(postId: $postId) {
-      id
-      body
-      author {
-        id
-        name
-        avatar
-        username
-      }
-      createdAt
-      commentCount
-      likeCount
-      likes {
-        id
-        author
-        createdAt
-      }
-      comments {
-        id
-        body
-        author {
-          id
-          name
-          avatar
-          username
-        }
-        createdAt
-        replyCount
-      }
+      ...Post
+      ...PostComments
     }
   }
+  ${Fragment.feed.post}
+  ${Fragment.feed.comments}
 `;
 
 export const CREATE_POST = gql`
   mutation CreatePost($body: String!) {
     post: createPost(body: $body) {
-      id
-      body
-      author {
-        id
-        name
-        avatar
-        username
-      }
-      createdAt
-      commentCount
-      likeCount
-      likes {
-        id
-        author
-        createdAt
-      }
+      ...Post
     }
   }
-`;
-
-export const CREATE_COMMENT = gql`
-  mutation CreateComment($postId: ID!, $body: String!) {
-    comment: createComment(postId: $postId, body: $body) {
-      id
-      body
-      author {
-        id
-        name
-        username
-        avatar
-      }
-      createdAt
-      post {
-        id
-        body
-        author {
-          id
-          name
-          username
-          avatar
-        }
-        createdAt
-        commentCount
-        likeCount
-        likes {
-          id
-          author
-          createdAt
-        }
-      }
-      # ancestors {
-      #   id
-      #   body
-      #   author {
-      #     id
-      #     name
-      #     username
-      #     avatar
-      #   }
-      #   createdAt
-      #   replyCount
-      # }
-      replyCount
-      # replies {
-      #   id
-      #   body
-      #   author {
-      #     id
-      #     name
-      #     username
-      #     avatar
-      #   }
-      #   createdAt
-      #   replyCount
-      # }
-    }
-  }
+  ${Fragment.feed.post}
 `;
 
 export const LIKE_POST = gql`
-  mutation LikePost($postId: ID!) {
-    like: likePost(postId: $postId) {
-      id
-      body
-      author {
-        id
-        name
-        avatar
-        username
-      }
-      commentCount
-      likeCount
-      likes {
-        id
-        author
-        createdAt
-      }
+  mutation LikePost($feedId: ID!) {
+    post: likePost(feedId: $feedId) {
+      ...Post
     }
   }
+  ${Fragment.feed.post}
 `;
 
-export const FG_COMMENTS_ON_POST = gql`
-  fragment Comments on Post {
-    comments {
-      id
-      body
-      author {
-        id
-        name
-        avatar
-        username
+export const GET_COMMENT = gql`
+  query GetComment($commentId: ID!) {
+    comment: getComment(commentId: $commentId) {
+      ...Comment
+      post {
+        ...Post
       }
-      createdAt
-      replyCount
+      ancestors {
+        ...Comment
+      }
+      replies {
+        ...Comment
+      }
     }
   }
+  ${Fragment.feed.post}
+  ${Fragment.feed.comment}
+`;
+
+export const CREATE_COMMENT = gql`
+  mutation CreateComment($postId: ID!, $commentId: ID, $body: String!) {
+    comment: createComment(
+      postId: $postId
+      commentId: $commentId
+      body: $body
+    ) {
+      ...Comment
+      post {
+        ...Post
+      }
+      ancestors {
+        ...Comment
+      }
+    }
+  }
+  ${Fragment.feed.post}
+  ${Fragment.feed.comment}
+`;
+
+export const LIKE_COMMENT = gql`
+  mutation LikeComment($feedId: ID!) {
+    comment: likeComment(feedId: $feedId) {
+      ...Comment
+      post {
+        ...Post
+      }
+    }
+  }
+  ${Fragment.feed.post}
+  ${Fragment.feed.comment}
 `;

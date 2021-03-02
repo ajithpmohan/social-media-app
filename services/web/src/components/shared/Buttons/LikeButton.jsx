@@ -4,9 +4,8 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon, Label } from 'semantic-ui-react';
 
 import { AuthContext } from 'contextAPI';
-import { LIKE_POST } from 'schemas';
 
-const LikeButton = ({ post: { postId, likes, likeCount } }) => {
+const LikeButton = ({ feed: { feedId, likes, likeCount, likeMutation } }) => {
   const [liked, setLiked] = useState(false);
   const { authUser } = useContext(AuthContext);
 
@@ -16,10 +15,16 @@ const LikeButton = ({ post: { postId, likes, likeCount } }) => {
       : setLiked(false);
   }, [likeCount]);
 
-  const [likePost] = useMutation(LIKE_POST, { variables: { postId } });
+  const [likeFeed] = useMutation(likeMutation, {
+    variables: { feedId },
+  });
 
+  const handleLike = (e) => {
+    e.stopPropagation();
+    likeFeed();
+  };
   return (
-    <Button as="div" labelPosition="right" onClick={() => likePost()}>
+    <Button as="div" labelPosition="right" onClick={handleLike}>
       <Button basic={liked ? false : true} color="blue">
         <Icon name="heart" />
       </Button>
@@ -31,10 +36,11 @@ const LikeButton = ({ post: { postId, likes, likeCount } }) => {
 };
 
 LikeButton.propTypes = {
-  post: PropTypes.shape({
-    postId: PropTypes.string,
+  feed: PropTypes.shape({
+    feedId: PropTypes.string,
     likes: PropTypes.array,
     likeCount: PropTypes.number,
+    likeMutation: PropTypes.object,
   }),
 };
 
