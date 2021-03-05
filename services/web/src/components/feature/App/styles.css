@@ -23,12 +23,21 @@
   text-transform: uppercase !important;
 }
 
+.ui.comments {
+  max-width: 100% !important;
+}
+
 .feed-event {
-  padding: 20px !important;
+  padding: 15px !important;
   border-bottom: 1px solid rgb(230, 230, 230);
 }
 
 .feed-event:hover {
   cursor: pointer;
-  background-color: rgb(240, 240, 240) !important;
+  background-color: rgb(210, 210, 210) !important;
 }
+
+/* .threaded .actions {
+  position: absolute;
+  bottom: 5px;
+} */

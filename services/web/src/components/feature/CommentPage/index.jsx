@@ -21,9 +21,14 @@ const CommentPage = () => {
       <Feed size="small">
         <PostCard post={post} key={post.id} />
       </Feed>
-      <Comment.Group size="small">
+      <Comment.Group size="small" threaded>
         {ancestors.map((ancestor) => (
-          <CommentCard comment={ancestor} postId={post.id} key={ancestor.id} />
+          <CommentCard
+            comment={ancestor}
+            postId={post.id}
+            key={ancestor.id}
+            threaded={true}
+          />
         ))}
       </Comment.Group>
       <Comment.Group size="huge">

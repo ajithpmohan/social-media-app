@@ -8,7 +8,7 @@ import { LikeButton } from 'components/shared/Buttons';
 import { ReplyForm } from 'components/shared/Forms';
 import { LIKE_COMMENT } from 'schemas';
 
-const CommentCard = ({ comment, postId }) => {
+const CommentCard = ({ comment, postId, threaded = false }) => {
   const {
     id: commentId,
     author: { name, username },
@@ -43,6 +43,7 @@ const CommentCard = ({ comment, postId }) => {
             <ReplyForm comment={comment} postId={postId} />
           </Comment.Actions>
         </Comment.Content>
+        {threaded && <Comment.Group />}
       </Comment>
       <Divider />
     </>
@@ -62,6 +63,7 @@ CommentCard.propTypes = {
     likes: PropTypes.arrayOf(PropTypes.object).isRequired,
   }),
   postId: PropTypes.string.isRequired,
+  threaded: PropTypes.bool,
 };
 
 export default CommentCard;
