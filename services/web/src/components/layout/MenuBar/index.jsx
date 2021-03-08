@@ -16,7 +16,15 @@ const MenuBar = () => {
   const handleItemClick = (e, { name }) => setactiveItem(name);
 
   return (
-    <Menu pointing secondary size="massive" id="navbar">
+    <Menu
+      stackable
+      fixed="top"
+      size="massive"
+      color="blue"
+      id="navbar"
+      borderless
+      inverted
+    >
       <Menu.Item>
         <Icon name="twitter" size="large" color="orange" />
       </Menu.Item>
@@ -38,7 +46,6 @@ const MenuBar = () => {
 const PublicMenuItem = ({ activeItem, handleItemClick }) => {
   return (
     <Menu.Menu position="right">
-      <SearchMenuItem />
       <Menu.Item
         name="register"
         active={activeItem === 'register'}
@@ -53,6 +60,7 @@ const PublicMenuItem = ({ activeItem, handleItemClick }) => {
         as={Link}
         to={ROUTES.LOGIN}
       />
+      <SearchMenuItem />
     </Menu.Menu>
   );
 };
@@ -78,8 +86,8 @@ const PrivateMenuItem = ({ activeItem, handleItemClick }) => {
         to={ROUTES.HOME}
       />
       <Menu.Menu position="right">
-        <SearchMenuItem />
         <Menu.Item name="logout" onClick={handleLogout} />
+        <SearchMenuItem />
       </Menu.Menu>
     </>
   );

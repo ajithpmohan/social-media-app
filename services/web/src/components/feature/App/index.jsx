@@ -19,7 +19,7 @@ const App = () => {
     <Container fluid>
       <Router>
         <MenuBar />
-        <Container id="main">
+        <Container>
           <Switch>
             <PublicRoute exact path={ROUTES.LOGIN} component={Login} />
             <PublicRoute exact path={ROUTES.REGISTER} component={Register} />

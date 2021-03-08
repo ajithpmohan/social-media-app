@@ -39,6 +39,7 @@ const CommentPage = () => {
           <CommentCard comment={reply} postId={post.id} key={reply.id} />
         ))}
       </Comment.Group>
+      <div id="footer"></div>
     </>
   );
 };
