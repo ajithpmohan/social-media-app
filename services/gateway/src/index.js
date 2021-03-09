@@ -1,8 +1,19 @@
 import 'dotenv/config';
-import { ApolloServer } from 'apollo-server';
 import { ApolloGateway, RemoteGraphQLDataSource } from '@apollo/gateway';
+import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import expressJwt from 'express-jwt';
 
-const PORT = process.env.PORT || '5000';
+const port = process.env.PORT || '5000';
+const app = express();
+
+app.use(
+  expressJwt({
+    secret: process.env.SECRET,
+    algorithms: ['HS256'],
+    credentialsRequired: false,
+  }),
+);
 
 // Initialize an ApolloGateway instance and pass it an array of
 // your implementing service names and URLs
@@ -15,9 +26,10 @@ const gateway = new ApolloGateway({
     return new RemoteGraphQLDataSource({
       url,
       willSendRequest({ request, context }) {
-        if (context.Authorization) {
-          request.http.headers.set('Authorization', context.Authorization);
-        }
+        request.http.headers.set(
+          'user',
+          context.user ? JSON.stringify(context.user) : null,
+        );
       },
     });
   },
@@ -26,16 +38,16 @@ const gateway = new ApolloGateway({
 // Pass the ApolloGateway to the ApolloServer constructor
 const server = new ApolloServer({
   gateway,
-
   // Disable subscriptions (not currently supported with ApolloGateway)
   subscriptions: false,
   context: ({ req }) => {
-    return {
-      Authorization: req.headers.authorization || null,
-    };
+    const user = req.user || null;
+    return { user };
   },
 });
 
-server.listen(PORT).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
+server.applyMiddleware({ app });
+
+app.listen({ port }, () =>
+  console.log(`Gateway ready at http://localhost:${port}${server.graphqlPath}`),
+);

@@ -54,6 +54,8 @@ const CommentForm = ({ post }) => {
     setOpen(true);
   };
 
+  const disabled = text === '';
+
   return (
     <Modal
       size="tiny"
@@ -115,6 +117,7 @@ const CommentForm = ({ post }) => {
               content="Add Reply"
               labelPosition="left"
               icon="edit"
+              disabled={disabled}
               primary
             />
           </Form>

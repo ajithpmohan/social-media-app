@@ -1,6 +1,5 @@
 import { AuthenticationError, UserInputError } from 'apollo-server';
 import { models } from '../../models';
-import ensureAuth from '../../utils/ensure-auth';
 import validateMessage from '../../utils/validator';
 
 export default {
@@ -24,9 +23,6 @@ export default {
   },
   Query: {
     getComment: async (_, { commentId }, context) => {
-      // verify auth token
-      await ensureAuth(context);
-
       const comment = await models.Comment.findOne({ _id: commentId }).catch(
         (err) => {
           if (err.name === 'CastError') {
@@ -42,14 +38,12 @@ export default {
     },
   },
   Mutation: {
-    createComment: async (_, { postId, commentId = null, body }, context) => {
+    createComment: async (_, { postId, commentId = null, body }, { user }) => {
       /*
         if commentId then it's a reply to a comment
         otherwise it's a comment to a post
       */
-
-      // verify auth token
-      const { id: author } = await ensureAuth(context);
+      const author = user.id;
 
       // validate post data
       const { errors, valid } = validateMessage(body);
@@ -103,15 +97,15 @@ export default {
       return comment;
     },
 
-    deleteComment: async (_, { postId, commentId }, context) => {
-      // verify auth token
-      const { id: author } = await ensureAuth(context);
+    deleteComment: async (_, { postId, commentId }, { user }) => {
+      const author = user.id;
 
       const post = await models.Post.findById(postId).catch((err) => {
         if (err.name === 'CastError') {
           throw new UserInputError('Post not found');
         }
       });
+
       if (!post) {
         throw new UserInputError('Post not found');
       }
@@ -124,6 +118,7 @@ export default {
           throw new UserInputError('Comment not found');
         }
       });
+
       if (!comment) {
         throw new UserInputError('Comment not found');
       }
@@ -132,9 +127,14 @@ export default {
       }
 
       await models.Comment.deleteMany({
-        post: comment.post.id,
-        ancestors: { $in: comment.id },
+        post: postId,
+        ancestors: { $in: commentId },
+      }).catch((err) => {
+        if (err.name === 'CastError') {
+          throw new UserInputError('Comment not found');
+        }
       });
+
       await comment.delete();
 
       return 'Comment deleted successfully';

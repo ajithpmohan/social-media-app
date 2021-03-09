@@ -8,7 +8,7 @@ import {
   validateLoginInput,
   validateRegisterInput,
 } from '../../utils/validators';
-import checkAuth from '../../utils/check-auth';
+// import checkAuth from '../../utils/check-auth';
 
 const generateToken = ({ id, email, username }) => {
   // Create an auth token
@@ -24,13 +24,13 @@ export default {
       return user.toJSON();
     },
   },
-  Query: {
-    me: async (_, {}, context) => {
-      const user = await checkAuth(context);
+  // Query: {
+  //   me: async (_, {}, context) => {
+  //     const user = await checkAuth(context);
 
-      return user.toJSON();
-    },
-  },
+  //     return user.toJSON();
+  //   },
+  // },
   Mutation: {
     login: async (_, { loginInput: { email, password } }) => {
       // Validate user data

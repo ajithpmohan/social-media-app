@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql } from 'apollo-server';
 
 const typeDefs = gql`
   type User {
@@ -33,9 +33,9 @@ const typeDefs = gql`
     confirmPassword: String!
   }
 
-  extend type Query {
-    me: Profile!
-  }
+  # extend type Query {
+  #   me: Profile!
+  # }
 
   type Mutation {
     login(loginInput: LoginInput): User!

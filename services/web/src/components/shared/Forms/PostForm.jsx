@@ -35,6 +35,8 @@ const PostForm = () => {
     createPost({ variables: { body: text } });
   };
 
+  const disabled = text === '';
+
   return (
     <>
       <Header as="h3">Create a Post</Header>
@@ -45,7 +47,13 @@ const PostForm = () => {
           onChange={({ target: { value } }) => setText(value)}
           error={errors?.body ? true : false}
         />
-        <Button content="Post" labelPosition="left" icon="feed" primary />
+        <Button
+          content="Post"
+          labelPosition="left"
+          icon="feed"
+          disabled={disabled}
+          primary
+        />
       </Form>
       {Object.keys(errors).length > 0 && (
         <div className="ui error message">

@@ -4,12 +4,9 @@ export default {
   Profile: {
     ...userResolvers.Profile,
   },
-  User: {
-    ...userResolvers.User,
-  },
-  Query: {
-    ...userResolvers.Query,
-  },
+  // Query: {
+  //   ...userResolvers.Query,
+  // },
   Mutation: {
     ...userResolvers.Mutation,
   },

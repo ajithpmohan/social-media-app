@@ -1,12 +1,10 @@
 import { UserInputError } from 'apollo-server';
 import { models } from '../../models';
-import ensureAuth from '../../utils/ensure-auth';
 
 export default {
   Mutation: {
-    likePost: async (_, { feedId }, context) => {
-      // verify auth token
-      const { id: author } = await ensureAuth(context);
+    likePost: async (_, { feedId }, { user }) => {
+      const author = user.id;
 
       const post = await models.Post.findById(feedId).catch((err) => {
         if (err.name === 'CastError') {
@@ -25,9 +23,8 @@ export default {
       await post.save();
       return post;
     },
-    likeComment: async (_, { feedId }, context) => {
-      // verify auth token
-      const { id: author } = await ensureAuth(context);
+    likeComment: async (_, { feedId }, { user }) => {
+      const author = user.id;
 
       const comment = await models.Comment.findById(feedId).catch((err) => {
         if (err.name === 'CastError') {

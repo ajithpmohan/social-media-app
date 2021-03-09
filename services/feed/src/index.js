@@ -1,29 +1,25 @@
 import 'dotenv/config';
-import cors from 'cors';
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server';
 import { buildFederatedSchema } from '@apollo/federation';
+import { applyMiddleware } from 'graphql-middleware';
 
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
+import { permissions } from './utils/permissions';
 
-const app = express();
-
-const PORT = process.env.PORT || '5000';
-
-const corsOptions = {
-  origin: process.env.WEB_URL,
-};
-
-app.use(cors(corsOptions));
+const port = process.env.PORT || '5002';
 
 const server = new ApolloServer({
-  schema: buildFederatedSchema([{ typeDefs, resolvers }]),
-  context: ({ req }) => ({ req }),
+  schema: applyMiddleware(
+    buildFederatedSchema([{ typeDefs, resolvers }]),
+    permissions,
+  ),
+  context: ({ req }) => {
+    const user = req.headers.user ? JSON.parse(req.headers.user) : null;
+    return { user };
+  },
 });
 
-server.applyMiddleware({ app, path: '/graphql' });
-
-app.listen({ port: PORT }, () => {
-  console.log(`Feed Server on http://localhost:${PORT}/graphql`);
+server.listen({ port }).then(({ url }) => {
+  console.log(`Feed Service ready at ${url}`);
 });
