@@ -38,6 +38,15 @@ const cache = new InMemoryCache({
         },
       },
     },
+    Comment: {
+      fields: {
+        likes: {
+          merge(_, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
   },
 });
 

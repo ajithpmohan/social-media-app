@@ -5,7 +5,7 @@ import ReactTimeAgo from 'react-time-ago';
 import { Button, Feed, Form, Modal } from 'semantic-ui-react';
 
 import { CommentButton, LikeButton } from 'components/shared/Buttons';
-import { CREATE_COMMENT, LIKE_COMMENT } from 'schemas';
+import { CREATE_COMMENT, LIKE_COMMENT, Fragment } from 'schemas';
 
 const ReplyForm = ({ comment, postId }) => {
   const { id: commentId, likes, likeCount, commentCount } = comment;
@@ -15,22 +15,22 @@ const ReplyForm = ({ comment, postId }) => {
   const [errors, setErrors] = useState({});
 
   const [createComment] = useMutation(CREATE_COMMENT, {
-    update(cache, { data }) {
-      // const { post, ...rest } = comment;
-      // const postFragment = cache.readFragment({
-      //   id: `Post:${post.id}`,
-      //   fragment: Fragment.feed.comments,
-      // });
-      // if (postFragment) {
-      //   // Update comments array of post whenever new comment is created.
-      //   cache.writeFragment({
-      //     id: `Post:${post.id}`,
-      //     fragment: Fragment.feed.comments,
-      //     data: {
-      //       comments: [...postFragment.comments, rest],
-      //     },
-      //   });
-      // }
+    update(cache, { data: { comment } }) {
+      const commentFragment = cache.readFragment({
+        id: `Comment:${commentId}`,
+        fragment: Fragment.feed.replies,
+      });
+
+      if (commentFragment) {
+        // Update replies array of comment whenever new reply is created.
+        cache.writeFragment({
+          id: `Comment:${commentId}`,
+          fragment: Fragment.feed.replies,
+          data: {
+            replies: [...commentFragment.replies, comment],
+          },
+        });
+      }
     },
     onCompleted() {
       setText('');

@@ -14,7 +14,7 @@ export const GET_POST = gql`
   query GetPost($postId: ID!) {
     post: getPost(postId: $postId) {
       ...Post
-      ...PostComments
+      ...Comments
     }
   }
   ${Fragment.feed.post}
@@ -49,13 +49,12 @@ export const GET_COMMENT = gql`
       ancestors {
         ...Comment
       }
-      replies {
-        ...Comment
-      }
+      ...Replies
     }
   }
   ${Fragment.feed.post}
   ${Fragment.feed.comment}
+  ${Fragment.feed.replies}
 `;
 
 export const CREATE_COMMENT = gql`

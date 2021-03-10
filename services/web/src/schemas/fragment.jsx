@@ -23,7 +23,7 @@ export const Fragment = {
       }
     `,
     comments: gql`
-      fragment PostComments on Post {
+      fragment Comments on Post {
         comments {
           id
           body
@@ -61,6 +61,28 @@ export const Fragment = {
           id
           author
           createdAt
+        }
+      }
+    `,
+    replies: gql`
+      fragment Replies on Comment {
+        replies {
+          id
+          body
+          author {
+            id
+            name
+            avatar
+            username
+          }
+          createdAt
+          commentCount: repliesCount
+          likeCount
+          likes {
+            id
+            author
+            createdAt
+          }
         }
       }
     `,
