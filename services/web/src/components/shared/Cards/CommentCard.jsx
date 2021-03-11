@@ -6,7 +6,6 @@ import { Comment, Divider } from 'semantic-ui-react';
 
 import { LikeButton } from 'components/shared/Buttons';
 import { ReplyForm } from 'components/shared/Forms';
-import { LIKE_COMMENT } from 'schemas';
 
 const CommentCard = ({ comment, postId, threaded = false }) => {
   const {
@@ -16,6 +15,7 @@ const CommentCard = ({ comment, postId, threaded = false }) => {
     createdAt,
     likes,
     likeCount,
+    __typename: feedType,
   } = comment;
 
   const history = useHistory();
@@ -35,12 +35,12 @@ const CommentCard = ({ comment, postId, threaded = false }) => {
               key={commentId}
               feed={{
                 feedId: commentId,
+                feedType,
                 likes,
                 likeCount,
-                likeMutation: LIKE_COMMENT,
               }}
             />
-            <ReplyForm comment={comment} postId={postId} />
+            <ReplyForm feed={comment} parent={postId} />
           </Comment.Actions>
         </Comment.Content>
         {threaded && <Comment.Group />}
@@ -61,6 +61,7 @@ CommentCard.propTypes = {
     createdAt: PropTypes.string.isRequired,
     likeCount: PropTypes.number.isRequired,
     likes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    __typename: PropTypes.string.isRequired,
   }),
   postId: PropTypes.string.isRequired,
   threaded: PropTypes.bool,

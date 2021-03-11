@@ -6,11 +6,10 @@ import { Feed } from 'semantic-ui-react';
 
 import { LikeButton } from 'components/shared/Buttons';
 import { CommentForm } from 'components/shared/Forms';
-import { LIKE_POST } from 'schemas';
 
 const PostCard = ({ post }) => {
   const history = useHistory();
-  const { id: postId, likes, likeCount } = post;
+  const { id: postId, likes, likeCount, __typename: feedType } = post;
 
   return (
     <>
@@ -33,12 +32,12 @@ const PostCard = ({ post }) => {
               key={postId}
               feed={{
                 feedId: postId,
+                feedType,
                 likes,
                 likeCount,
-                likeMutation: LIKE_POST,
               }}
             />
-            <CommentForm post={post} />
+            <CommentForm feed={post} />
           </Feed.Meta>
         </Feed.Content>
       </Feed.Event>
@@ -57,6 +56,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.string.isRequired,
     likeCount: PropTypes.number.isRequired,
     likes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    __typename: PropTypes.string.isRequired,
   }),
 };
 

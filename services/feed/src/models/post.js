@@ -37,10 +37,10 @@ postSchema.virtual('comments', {
   // an array. `justOne` is false by default.
   justOne: false,
   match: { parent: null },
-  // options: { sort: { name: -1 }, limit: 5 }
+  options: { sort: { createdAt: -1 } },
 });
 
-// Always populate the user field
+// Always populate the comments field
 const populateComments = function () {
   this.populate('comments');
 };

@@ -29,3 +29,46 @@ body {
 #footer {
   height: 500px;
 }
+
+.ui.feed.primary-feed {
+  padding: 25px !important;
+}
+.ui.feed.primary-feed > .event.profile {
+  font-size: 1.6rem !important;
+}
+
+.ui.feed.primary-feed > .event > .content .summary > .user:hover {
+  text-decoration: underline;
+}
+
+.ui.feed.primary-feed > .event > .content .summary > .meta {
+  color: rgba(0, 0, 0, 0.4);
+  margin: 0.2em 0 0 !important;
+}
+
+.ui.feed.primary-feed > .event.body > .content > .extra:first-child {
+  font-size: 1.6rem;
+  max-width: 100% !important;
+}
+.ui.feed.primary-feed > .event.body > .content > .extra > .date {
+  padding-top: 30px;
+  font-size: 1.2rem;
+  word-spacing: 0.4rem;
+}
+.ui.feed.primary-feed > .event.body > .content > .extra > .date:hover {
+  text-decoration: underline;
+}
+
+/* .ui.feed.primary-feed > .event.body > .content > .extra > .meta {
+  padding-right: 30px;
+}
+
+.ui.feed.primary-feed > .event.body > .content > .extra > .meta:hover {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+.ui.feed.primary-feed > .event.body > .content > .extra > .meta > .label {
+  font-size: 1.3rem !important;
+  word-spacing: 0.3rem;
+} */

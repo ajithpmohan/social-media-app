@@ -4,10 +4,13 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon, Label } from 'semantic-ui-react';
 
 import { AuthContext } from 'contextAPI';
+import { LIKE_POST, LIKE_COMMENT } from 'schemas';
 
-const LikeButton = ({ feed: { feedId, likes, likeCount, likeMutation } }) => {
+const LikeButton = ({ feed: { feedId, feedType, likes, likeCount } }) => {
   const [liked, setLiked] = useState(false);
   const { authUser } = useContext(AuthContext);
+
+  const likeMutation = feedType === 'Post' ? LIKE_POST : LIKE_COMMENT;
 
   useEffect(() => {
     likes.findIndex((like) => like.author === authUser.id) !== -1
@@ -38,9 +41,9 @@ const LikeButton = ({ feed: { feedId, likes, likeCount, likeMutation } }) => {
 LikeButton.propTypes = {
   feed: PropTypes.shape({
     feedId: PropTypes.string,
+    feedType: PropTypes.string.isRequired,
     likes: PropTypes.array,
     likeCount: PropTypes.number,
-    likeMutation: PropTypes.object,
   }),
 };
 

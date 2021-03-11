@@ -17,7 +17,7 @@ export default {
     },
     likeCount: (comment) => comment.likes.length,
     replies: async (comment) =>
-      await models.Comment.find({ parent: comment.id }),
+      await models.Comment.find({ parent: comment.id }).sort({ createdAt: -1 }),
     repliesCount: async (comment) =>
       await models.Comment.count({ parent: comment.id }),
   },

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Feed, Comment } from 'semantic-ui-react';
+import { Comment } from 'semantic-ui-react';
 
-import { PostCard, CommentCard } from 'components/shared/Cards';
+import { CommentCard, PrimaryCard } from 'components/shared/Cards';
 import { GET_POST } from 'schemas';
 
 const PostPage = () => {
@@ -19,9 +19,8 @@ const PostPage = () => {
 
   return (
     <>
-      <Feed size="large">
-        <PostCard post={post} key={post.id} />
-      </Feed>
+      <PrimaryCard key={post.id} feed={post} />
+
       <Comment.Group size="small">
         {post.comments.map((comment) => (
           <CommentCard comment={comment} postId={post.id} key={comment.id} />
