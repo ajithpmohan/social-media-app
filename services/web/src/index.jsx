@@ -2,12 +2,8 @@ import ReactDOM from 'react-dom';
 
 import ApolloProvider from 'ApolloProvider';
 import reportWebVitals from 'reportWebVitals';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
 
 import 'semantic-ui-css/semantic.min.css';
-
-TimeAgo.addDefaultLocale(en);
 
 ReactDOM.render(ApolloProvider, document.getElementById('root'));
 

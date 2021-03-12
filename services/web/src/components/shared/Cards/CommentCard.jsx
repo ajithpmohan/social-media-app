@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import ReactTimeAgo from 'react-time-ago';
+import Moment from 'react-moment';
 import { Comment, Divider } from 'semantic-ui-react';
 
 import { LikeButton } from 'components/shared/Buttons';
@@ -27,7 +27,7 @@ const CommentCard = ({ comment, postId, threaded = false }) => {
         <Comment.Content onClick={() => history.push(`/comment/${commentId}`)}>
           <Comment.Author as="a">{name}</Comment.Author> @{username}
           <Comment.Metadata>
-            <ReactTimeAgo date={new Date(+createdAt)} locale="en-US" />
+            <Moment date={+createdAt} fromNow />
           </Comment.Metadata>
           <Comment.Text>{body}</Comment.Text>
           <Comment.Actions>

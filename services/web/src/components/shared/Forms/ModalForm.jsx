@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
-import ReactTimeAgo from 'react-time-ago';
+import Moment from 'react-moment';
 import { Button, Feed, Form, Modal } from 'semantic-ui-react';
 
 import { CommentButton, LikeButton } from 'components/shared/Buttons';
@@ -69,7 +69,7 @@ const ModalForm = ({
       }
       onClick={(e) => e.stopPropagation()}
     >
-      <Modal.Header>Feed</Modal.Header>
+      <Modal.Header>{feedType}</Modal.Header>
       <Modal.Content scrolling>
         <Feed size="large">
           <Feed.Event>
@@ -80,7 +80,7 @@ const ModalForm = ({
               <Feed.Summary>
                 <Feed.User>{name}</Feed.User> @{username}
                 <Feed.Date>
-                  <ReactTimeAgo date={new Date(+createdAt)} locale="en-US" />
+                  <Moment date={+createdAt} fromNow />
                 </Feed.Date>
               </Feed.Summary>
               <Feed.Extra text size="huge">
@@ -109,7 +109,7 @@ const ModalForm = ({
               error={errors?.body ? true : false}
             />
             <Button
-              content="Add Reply"
+              content={feedType === 'Post' ? 'Add Comment' : 'Add Reply'}
               labelPosition="left"
               icon="edit"
               primary

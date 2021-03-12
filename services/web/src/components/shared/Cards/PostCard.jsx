@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory } from 'react-router-dom';
-import ReactTimeAgo from 'react-time-ago';
+import Moment from 'react-moment';
 import { Feed } from 'semantic-ui-react';
 
 import { LikeButton } from 'components/shared/Buttons';
@@ -21,7 +21,7 @@ const PostCard = ({ post }) => {
           <Feed.Summary>
             <Feed.User>{post.author.name}</Feed.User> @{post.author.username}
             <Feed.Date>
-              <ReactTimeAgo date={new Date(+post.createdAt)} locale="en-US" />
+              <Moment date={+post.createdAt} fromNow />
             </Feed.Date>
           </Feed.Summary>
           <Feed.Extra text size="huge">
