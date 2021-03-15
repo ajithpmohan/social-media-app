@@ -1,34 +1,45 @@
+/* eslint-disable */
 import React from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
-
-import Login from 'components/feature/Login';
-import Register from 'components/feature/Register';
-import HomePage from 'components/feature/HomePage';
-import PostPage from 'components/feature/PostPage';
-import CommentPage from 'components/feature/CommentPage';
-import MenuBar from 'components/layout/MenuBar';
+import './styles.css';
 
 import * as ROUTES from 'constants/routes';
-import { PublicRoute, PrivateRoute } from 'components/layout/Route';
+import { PrivateRoute, PublicRoute } from 'components/layout/Route';
 
-import './styles.css';
+import CommentPage from 'components/feature/CommentPage';
+import HomePage from 'components/feature/HomePage';
+import LoginPage from 'components/feature/LoginPage';
+import NotFoundPage from 'components/feature/NotFoundPage';
+import PostPage from 'components/feature/PostPage';
+import RegisterPage from 'components/feature/RegisterPage';
+import MenuBar from 'components/layout/MenuBar';
 
 const App = () => {
   return (
     <Container fluid>
-      <Router>
+      <BrowserRouter>
         <MenuBar />
         <Container>
           <Switch>
-            <PublicRoute exact path={ROUTES.LOGIN} component={Login} />
-            <PublicRoute exact path={ROUTES.REGISTER} component={Register} />
+            <Route
+              exact
+              path="/"
+              render={() => <Redirect to={ROUTES.HOME} />}
+            />
+            <PublicRoute exact path={ROUTES.LOGIN} component={LoginPage} />
+            <PublicRoute
+              exact
+              path={ROUTES.REGISTER}
+              component={RegisterPage}
+            />
             <PrivateRoute exact path={ROUTES.HOME} component={HomePage} />
             <PrivateRoute exact path={ROUTES.POST} component={PostPage} />
             <PrivateRoute exact path={ROUTES.COMMENT} component={CommentPage} />
+            <Route component={NotFoundPage} />
           </Switch>
         </Container>
-      </Router>
+      </BrowserRouter>
     </Container>
   );
 };

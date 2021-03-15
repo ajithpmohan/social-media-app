@@ -13,23 +13,29 @@ import {
 
 import { AuthContext } from 'contextAPI';
 import * as ROUTES from 'constants/routes';
-import { LOGIN_USER } from 'schemas';
+import { REGISTER_USER } from 'schemas';
 
-const Login = () => {
+const RegisterPage = () => {
   const { login } = useContext(AuthContext);
   const history = useHistory();
 
   const [user, setUser] = useState({
+    name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
   const [errors, setErrors] = useState({});
 
-  const disabled = user.email === '' || user.password === '';
+  const disabled =
+    user.name === '' ||
+    user.email === '' ||
+    user.password === '' ||
+    user.confirmPassword === '';
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const [addUser, { loading }] = useMutation(REGISTER_USER, {
     variables: user,
-    onCompleted({ login: payload }) {
+    onCompleted({ register: payload }) {
       login(payload);
       history.push(ROUTES.HOME);
     },
@@ -43,7 +49,7 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors({});
-    loginUser();
+    addUser();
   };
 
   return (
@@ -51,7 +57,7 @@ const Login = () => {
       <Grid.Row>
         <Grid.Column width={6}>
           <Header as="h2" textAlign="center">
-            Login
+            Register
           </Header>
           <Segment>
             <Form
@@ -62,13 +68,23 @@ const Login = () => {
             >
               <Form.Input
                 fluid
+                icon="user"
+                name="name"
+                iconPosition="left"
+                placeholder="Name"
+                value={user.name}
+                error={errors?.name ? true : false}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+              />
+              <Form.Input
+                fluid
                 name="email"
                 type="email"
                 icon="mail"
                 iconPosition="left"
                 placeholder="Email"
                 value={user.email}
-                error={errors?.username ? true : false}
+                error={errors?.email ? true : false}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
               <Form.Input
@@ -82,14 +98,20 @@ const Login = () => {
                 error={errors?.password ? true : false}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
-              <Button
-                color="blue"
+              <Form.Input
                 fluid
-                size="large"
-                type="submit"
-                disabled={disabled}
-              >
-                Login
+                name="confirmPassword"
+                type="password"
+                icon="lock"
+                iconPosition="left"
+                placeholder="Confirm Password"
+                value={user.confirmPassword}
+                onChange={(e) =>
+                  setUser({ ...user, confirmPassword: e.target.value })
+                }
+              />
+              <Button color="blue" fluid size="large" disabled={disabled}>
+                Register
               </Button>
             </Form>
             {Object.keys(errors).length > 0 && (
@@ -104,7 +126,7 @@ const Login = () => {
           </Segment>
           <Message attached="bottom" size="big" warning>
             <Icon name="help" />
-            Not registered yet?&nbsp;<Link to={ROUTES.REGISTER}>Sign Up</Link>
+            Already signed up?&nbsp;<Link to={ROUTES.LOGIN}>Sign In</Link>
           </Message>
         </Grid.Column>
       </Grid.Row>
@@ -112,4 +134,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RegisterPage;

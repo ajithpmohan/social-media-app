@@ -13,7 +13,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        authUser ? <Redirect to={ROUTES.LOGIN} /> : <Component {...props} />
+        authUser ? <Redirect to={ROUTES.HOME} /> : <Component {...props} />
       }
     />
   );

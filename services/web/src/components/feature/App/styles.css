@@ -59,6 +59,10 @@ body {
   text-decoration: underline;
 }
 
+.ui.feed >.event >.content .extra.text {
+  max-width: 100% !important;
+}
+
 /* .ui.feed.primary-feed > .event.body > .content > .extra > .meta {
   padding-right: 30px;
 }

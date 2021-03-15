@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useApolloClient } from '@apollo/client';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { Icon, Input, Menu } from 'semantic-ui-react';
 
 import { AuthContext } from 'contextAPI';
@@ -50,14 +50,14 @@ const PublicMenuItem = ({ activeItem, handleItemClick }) => {
         name="register"
         active={activeItem === 'register'}
         onClick={handleItemClick}
-        as={Link}
+        as={NavLink}
         to={ROUTES.REGISTER}
       />
       <Menu.Item
         name="login"
         active={activeItem === 'login'}
         onClick={handleItemClick}
-        as={Link}
+        as={NavLink}
         to={ROUTES.LOGIN}
       />
       <SearchMenuItem />
@@ -82,7 +82,7 @@ const PrivateMenuItem = ({ activeItem, handleItemClick }) => {
         name="home"
         active={activeItem === 'home'}
         onClick={handleItemClick}
-        as={Link}
+        as={NavLink}
         to={ROUTES.HOME}
       />
       <Menu.Menu position="right">
