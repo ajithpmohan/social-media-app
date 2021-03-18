@@ -1,10 +1,11 @@
-import 'dotenv/config';
-import { ApolloGateway, RemoteGraphQLDataSource } from '@apollo/gateway';
-import { ApolloServer } from 'apollo-server-express';
-import express from 'express';
-import expressJwt from 'express-jwt';
+const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
+const { ApolloServer } = require('apollo-server-express');
+const express = require('express');
+const expressJwt = require('express-jwt');
+require('dotenv/config');
 
 const port = process.env.PORT || '5000';
+
 const app = express();
 
 app.use(
@@ -12,7 +13,7 @@ app.use(
     secret: process.env.SECRET,
     algorithms: ['HS256'],
     credentialsRequired: false,
-  }),
+  })
 );
 
 // Initialize an ApolloGateway instance and pass it an array of
@@ -28,7 +29,7 @@ const gateway = new ApolloGateway({
       willSendRequest({ request, context }) {
         request.http.headers.set(
           'user',
-          context.user ? JSON.stringify(context.user) : null,
+          context.user ? JSON.stringify(context.user) : null
         );
       },
     });
@@ -52,7 +53,7 @@ const gateway = new ApolloGateway({
 
   app.listen({ port }, () =>
     console.log(
-      `Gateway ready at http://localhost:${port}${server.graphqlPath}`,
-    ),
+      `Gateway ready at http://localhost:${port}${server.graphqlPath}`
+    )
   );
 })();

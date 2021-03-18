@@ -70,7 +70,6 @@ web_modules/
 
 # dotenv environment variables file
 .DS_Store
-.env
 .env.test
 .env.local
 .env.development.local

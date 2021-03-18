@@ -20,6 +20,7 @@ before_script:
 script:
   - docker-compose exec account npm run lint
   - docker-compose exec feed npm run lint
+  - docker-compose exec web npm run lint
 
 after_script:
   - docker-compose down -v
